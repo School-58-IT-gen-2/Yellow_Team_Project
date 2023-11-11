@@ -17,20 +17,22 @@ yellow_list = YellowList((1, 2, 3))
 
 # Это заглушка класса dict
 class YellowDict(dict):
-    # подсказка - у класса dict есть метод __init__(self)
-    # подсказка - у класса dict есть метод __init__(self, sequence)
-    # подсказка - у класса dict есть метод __init__(self, **kwargs)
-    def some_method(self):
-        pass
+   def __init__(self, dict):
+        super().__init__(dict)
+        dict["default"] = True
+        return dict
 
 # -- Часть Димы --
 
 # Это заглушка класса set
-class YellowSet(set):
-    # подсказка - у класса set есть метод __init__(self, items)
-    def some_method(self):
-        pass
-
+def YellowSet(set):
+    def __init__(self, list):
+        for i in range(list):
+            if type(list[i]) == bool:
+                return false
+            else:
+                pass
+        return True
 
 # Это вызов конструктора списка с помощью кортежа.
 # То есть на вход при создании экземпляра передается кортеж.
