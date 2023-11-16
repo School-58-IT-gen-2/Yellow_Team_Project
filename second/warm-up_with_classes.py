@@ -2,16 +2,28 @@
 class YellowList(list):
     def __init__(self, items):
         super().__init__(items)
-        items = list(items)
+        self.items = list(items)
         new_items = []
         for i in self:
-            for j in range(len(items)):
-                if items[j] == i:
-                    items[j] = "1" * j
-                    new_items.append(items[j])
+            for j in range(len(self.items)):
+                if self.items[j] == i:
+                    self.items[j] = "1" * j
+                    new_items.append(self.items[j])
         print(new_items)
+    
+    def __str__(self):
+        items_new = []     # список для новых элементов
+        for i in range(len(self.items)):
+            items_new.append(self.items[i])   # добавляем текущий элемент
+            items_new.append("--||--")   # добавляем разделитель
+            print(items_new)
+        items_new.remove(items_new[-1])   # удаляем последний разделитель
+        return f"{items_new}"
+    
+          
 
-yellow_list = YellowList((1, 2, 3))
+yellow_list = YellowList([1,2,3])
+print(yellow_list, sep = " ")
 
 # -- часть Вовы --
 
@@ -29,7 +41,7 @@ def YellowSet(set):
     def __init__(self, list):
         for i in range(list):
             if type(list[i]) == bool:
-                return false
+                return False
             else:
                 pass
         return True
