@@ -9,8 +9,8 @@ class Card:
         return f"{self.rank} of {self.suit}"
 
 class Deck:
-    ranks = ["Ace", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King"]
-    suits = ["Hearts", "Diamonds", "Clubs", "Spades"]
+    ranks = ["Туз", "2", "3", "4", "5", "6", "7", "8", "9", "10", "Валет", "Дама", "Король"]
+    suits = ["Черви", "Бубны", "Пики", "Крести"]
 
     def __init__(self):
         self.deck = []
@@ -34,16 +34,16 @@ class Hand:
         self.value += self.get_card_value(card)
 
     def get_card_value(self, card):
-        if card.rank in ["Jack", "Queen", "King"]:
+        if card.rank in ["Валет", "Дама", "Король"]:
             return 10
-        elif card.rank == "Ace":
+        elif card.rank == "Туз":
             return 11
         else:
             return int(card.rank)
 
     def adjust_for_ace(self):
         for card in self.cards:
-            if card.rank == "Ace" and self.value > 21:
+            if card.rank == "Туз" and self.value > 21:
                 self.value -= 10
 
 class BlackjackGame:
@@ -54,7 +54,7 @@ class BlackjackGame:
         self.dealer_hand = Hand()
 
     def play(self):
-        print("Welcome to Blackjack!")
+        print("Добро пожаловать в Blackjack!")
         for _ in range(1):
             self.player_hand.add_card(self.deck.deal_card())
             self.dealer_hand.add_card(self.deck.deal_card())
@@ -63,39 +63,39 @@ class BlackjackGame:
 
         while True:
             if self.player_hand.value == 21:
-                print("Blackjack! You win!")
+                print("Blackjack! Ты выиграл!")
                 break
             elif self.player_hand.value > 21:
-                print("Busted! You lose!")
+                print("Разорен! Потрачено!")
                 break
 
-            action = input("Do you want to hit or stand? ")
-            if action.lower() == "hit":
+            action = input("Хотите ходить или воздержаться? ")
+            if action.lower() == "ходить":
                 self.player_hand.add_card(self.deck.deal_card())
                 self.show_partial_hands()
-            elif action.lower() == "stand":
+            elif action.lower() == "пропуск":
                 while self.dealer_hand.value < 17:
                     self.dealer_hand.add_card(self.deck.deal_card())
                 self.show_final_hands()
                 if self.dealer_hand.value > 21:
-                    print("Dealer busted! You win!")
+                    print("Дилер! Вы выиграли!")
                 elif self.dealer_hand.value == self.player_hand.value:
-                    print("Push! It's a tie.")
+                    print("Ничья!")
                 elif self.dealer_hand.value > self.player_hand.value:
-                    print("Dealer wins!")
+                    print("Дилер выиграл!")
                 else:
-                    print("You win!")
+                    print("Вы выиграли!")
                 break
 
     def show_partial_hands(self):
-        print("Player's hand:", ", ".join(str(card) for card in self.player_hand.cards))
-        print("Dealer's hand:", self.dealer_hand.cards[0])
+        print("В руках игрока:", ", ".join(str(card) for card in self.player_hand.cards))
+        print("В руках дилера:", self.dealer_hand.cards[0])
 
     def show_final_hands(self):
-        print("Player's hand:", ", ".join(str(card) for card in self.player_hand.cards))
-        print("Dealer's hand:", ", ".join(str(card) for card in self.dealer_hand.cards))
-        print("Player's hand value:", self.player_hand.value)
-        print("Dealer's hand value:", self.dealer_hand.value)
+        print("В руках игрока:", ", ".join(str(card) for card in self.player_hand.cards))
+        print("В руказ дилера:", ", ".join(str(card) for card in self.dealer_hand.cards))
+        print("Твоя сумма значений карт:", self.player_hand.value)
+        print("Сумма значений карт диллера:", self.dealer_hand.value)
 
 game = BlackjackGame()
 game.play()
