@@ -3,10 +3,10 @@ import random
 
 class BlackjackGame:
     def __init__(self):
-        self.deck = Deck()
+        self.deck = Deck.Deck()
         self.deck.shuffle()
-        self.player_hand = Hand()
-        self.dealer_hand = Hand()
+        self.player_hand = Hand.Hand()
+        self.dealer_hand = Hand.Hand()
 
     def play(self):
         print("Добро пожаловать в Blackjack!")
@@ -33,7 +33,7 @@ class BlackjackGame:
                     self.dealer_hand.add_card(self.deck.deal_card())
                 self.show_final_hands()
                 if self.dealer_hand.value > 21:
-                    print("Дилер! Вы выиграли!")
+                    print("Дилер банкрот! Вы выиграли!")
                 elif self.dealer_hand.value == self.player_hand.value:
                     print("Ничья!")
                 elif self.dealer_hand.value > self.player_hand.value:
