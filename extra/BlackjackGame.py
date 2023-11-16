@@ -1,15 +1,16 @@
 from extra import Deck, Hand, Card
-import random
+import random, json
 
 class BlackjackGame:
     def __init__(self):
-        self.deck = Deck()
+        self.get_data()
+        self.deck = Deck.Deck()
         self.deck.shuffle()
-        self.player_hand = Hand()
-        self.dealer_hand = Hand()
+        self.player_hand = Hand.Hand()
+        self.dealer_hand = Hand.Hand()
 
     def play(self):
-        print("Добро пожаловать в Blackjack!")
+        print(f'Добро пожаловать в Blackjack! \nВыигрыши: {self.data["Wins"]} \nПроигрыши: {self.data["Loses"]}')
         for _ in range(1):
             self.player_hand.add_card(self.deck.deal_card())
             self.dealer_hand.add_card(self.deck.deal_card())
@@ -19,9 +20,13 @@ class BlackjackGame:
         while True:
             if self.player_hand.value == 21:
                 print("Blackjack! Ты выиграл!")
+                self.data["Wins"] += 1
+                self.set_data()
                 break
             elif self.player_hand.value > 21:
                 print("Разорен! Потрачено!")
+                self.data["Loses"]+=1
+                self.set_data()
                 break
 
             action = input("Хотите ходить или воздержаться? ")
@@ -33,13 +38,19 @@ class BlackjackGame:
                     self.dealer_hand.add_card(self.deck.deal_card())
                 self.show_final_hands()
                 if self.dealer_hand.value > 21:
-                    print("Дилер! Вы выиграли!")
+                    print("Дилер банкрот! Вы выиграли!")
+                    self.data["Wins"] += 1
+                    self.set_data()
                 elif self.dealer_hand.value == self.player_hand.value:
                     print("Ничья!")
                 elif self.dealer_hand.value > self.player_hand.value:
                     print("Дилер выиграл!")
+                    self.data["Loses"] += 1
+                    self.set_data()
                 else:
                     print("Вы выиграли!")
+                    self.data["Wins"] += 1
+                    self.set_data()
                 break
 
     def show_partial_hands(self):
@@ -51,3 +62,13 @@ class BlackjackGame:
         print("В руказ дилера:", ", ".join(str(card) for card in self.dealer_hand.cards))
         print("Твоя сумма значений карт:", self.player_hand.value)
         print("Сумма значений карт диллера:", self.dealer_hand.value)
+
+    def get_data(self):
+        with open("extra/data.json") as f:
+            self.data = json.load(f)
+            f.close()
+
+    def set_data(self):
+        with open("extra/data.json", "w") as f:
+            json.dumps(self.data, f)
+            f.close()

@@ -1,4 +1,5 @@
 import random
 from extra import BlackjackGame
 
-BlackjackGame().play()
+game = BlackjackGame.BlackjackGame()
+game.play()
