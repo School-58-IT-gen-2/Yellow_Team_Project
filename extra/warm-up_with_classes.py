@@ -9,7 +9,7 @@ class YellowList(list):
                 if items[j] == i:
                     items[j] = "1" * j
                     new_items.append(items[j])
-        print(new_items)
+        print(f"List: {new_items}")
 
 yellow_list = YellowList((1, 2, 3))
 
@@ -20,19 +20,22 @@ class YellowDict(dict):
    def __init__(self, dict):
         super().__init__(dict)
         dict["default"] = True
-        return dict
+        print(f"Dict: {dict}")
 
 # -- Часть Димы --
 
+yellow_dict = YellowDict(dict={})
+
 # Это заглушка класса set
-def YellowSet(set):
+class YellowSet(set):
     def __init__(self, list):
-        for i in range(list):
+        super().__init__(list)
+        for i in range(len(list)):
             if type(list[i]) == bool:
-                return false
+                print("Set: False")
             else:
                 pass
-        return True
+        print(f"Set: True")
 
 # Это вызов конструктора списка с помощью кортежа.
 # То есть на вход при создании экземпляра передается кортеж.
