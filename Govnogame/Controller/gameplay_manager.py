@@ -1,4 +1,5 @@
 from Controller import Data_loader
+from View import render
 
 class Game():
     def __init__(self, user_id=-1):

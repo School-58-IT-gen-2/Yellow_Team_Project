@@ -19,6 +19,22 @@
             "on_upgrade": {
                 "units_adder": "100type%"
             }
+        },
+        {
+            "type": "small_house",
+            "size": 2,
+            "units_adder": 1,
+            "position": [
+                0,
+                0
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_house{level}.png",
+            "max_level": 5,
+            "on_upgrade": {
+                "units_adder": "100type%"
+            }
         }
     ],
     "map_data": [

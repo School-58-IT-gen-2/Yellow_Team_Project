@@ -1,2 +1,1 @@
-def render():
-    pass
+from PIL import Image
