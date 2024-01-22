@@ -1,0 +1,62 @@
+{
+  "buildings": {
+    "small_house": {
+      "type": "small_house",
+      "size": 2,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "small_house{level}.png",
+      "max_level": 5,
+      "on_upgrade": {
+        "units_adder": "100type%"
+      }
+    },
+    "small_factory": {
+      "type": "small_factory",
+      "size": 1,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "small_factory.png",
+      "max_level": 5,
+      "modify": {
+        "wood_generation": 1
+      },
+      "on_upgrade": {
+        "units_adder": "100type%",
+        "wood_generation": "100type%"
+      }
+    },
+    "small_shop": {
+      "type": "small_shop",
+      "size": 1,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "small_shop.png",
+      "max_level": 2,
+      "modify": {
+        "selling_cost": 1,
+        "items_types": [
+          "wood"
+        ]
+      },
+      "on_upgrade": {
+        "units_adder": "100type%"
+      },
+
+      "on_level": {
+        "level": 2,
+        "items_types": [
+          "wood",
+          "iron"
+        ]
+    }
+    }
+  }
+}
+
