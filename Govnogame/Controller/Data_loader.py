@@ -39,7 +39,7 @@ class Data():
             for j in range(size):
                 map_x.append(0)
             map.append(map_x)
-            print(map[i], "\n")
+            #print(map[i], "\n")
 
         return map
 
