@@ -22,7 +22,7 @@ class Data():
                     "money":  100,
                     "units": 0,
                     "map": "default",
-                    "map_size": 16,
+                    "map_size": 8,
 
                     "houses_data": [],
                     "map_data": self.create_map(size=16)

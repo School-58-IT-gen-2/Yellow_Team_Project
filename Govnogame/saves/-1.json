@@ -5,19 +5,63 @@
     "map_size": 8,
     "houses_data": [
         {
-            "type": "small_house",
-            "size": 2,
+            "type": "small_factory",
+            "size": 1,
             "units_adder": 1,
             "position": [
-                0,
-                0
+                2,
+                2
             ],
             "can_delete": true,
             "level": 1,
-            "texture": "small_house{level}.png",
+            "texture": "small_factory.jpg",
             "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
             "on_upgrade": {
-                "units_adder": "100type%"
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                2,
+                2
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                2,
+                2
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
             }
         },
         {
@@ -30,215 +74,7 @@
             ],
             "can_delete": true,
             "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                0,
-                0
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "small_house{level}.png",
+            "texture": "small_house.png",
             "max_level": 5,
             "on_upgrade": {
                 "units_adder": "100type%"
@@ -247,25 +83,7 @@
     ],
     "map_data": [
         [
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
+            1,
             0,
             0,
             0,
@@ -303,7 +121,7 @@
         [
             0,
             0,
-            0,
+            1,
             0,
             0,
             0,
@@ -322,8 +140,26 @@
             0,
             0,
             0,
+            1,
             0,
             0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            1,
             0,
             0,
             0,

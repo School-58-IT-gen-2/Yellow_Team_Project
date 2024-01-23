@@ -7,7 +7,7 @@
       "position": null,
       "can_delete": true,
       "level": 1,
-      "texture": "small_house{level}.png",
+      "texture": "small_house.png",
       "max_level": 5,
       "on_upgrade": {
         "units_adder": "100type%"
@@ -20,7 +20,7 @@
       "position": null,
       "can_delete": true,
       "level": 1,
-      "texture": "small_factory.png",
+      "texture": "small_factory.jpg",
       "max_level": 5,
       "modify": {
         "wood_generation": 1
