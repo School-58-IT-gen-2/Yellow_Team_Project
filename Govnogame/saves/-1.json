@@ -10,7 +10,7 @@
             "units_adder": 1,
             "position": [
                 4,
-                4
+                7
             ],
             "can_delete": true,
             "level": 1,
@@ -30,7 +30,7 @@
             "units_adder": 1,
             "position": [
                 3,
-                3
+                4
             ],
             "can_delete": true,
             "level": 1,
@@ -50,7 +50,7 @@
             "units_adder": 1,
             "position": [
                 2,
-                2
+                3
             ],
             "can_delete": true,
             "level": 1,
@@ -69,8 +69,160 @@
             "size": 2,
             "units_adder": 1,
             "position": [
-                0,
-                0
+                6,
+                4
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_house.png",
+            "max_level": 5,
+            "on_upgrade": {
+                "units_adder": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                4,
+                7
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                3,
+                4
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                2,
+                3
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_house",
+            "size": 2,
+            "units_adder": 1,
+            "position": [
+                6,
+                4
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_house.png",
+            "max_level": 5,
+            "on_upgrade": {
+                "units_adder": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                4,
+                7
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                3,
+                4
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                2,
+                3
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.jpg",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_house",
+            "size": 2,
+            "units_adder": 1,
+            "position": [
+                6,
+                4
             ],
             "can_delete": true,
             "level": 1,
@@ -159,26 +311,8 @@
     ],
     "map_data": [
         [
-            1,
             0,
             0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            1,
             0,
             0,
             0,
@@ -197,48 +331,12 @@
         [
             0,
             0,
-            1,
-            1,
             0,
             0,
             0,
             0,
             0,
             0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            1,
-            1,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0,
-            0
-        ],
-        [
-            0,
-            0,
-            0,
-            0,
-            1,
-            0,
-            0,
-            1,
             0,
             0,
             0,
@@ -271,7 +369,7 @@
             0,
             0,
             0,
-            1,
+            0,
             0,
             0,
             0,
@@ -290,7 +388,61 @@
             0,
             0,
             0,
-            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+        ],
+        [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
             0,
             0,
             0,

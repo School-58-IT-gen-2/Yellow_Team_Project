@@ -8,16 +8,16 @@ class Data():
         pass
 
     def save_user_data(self, user_id=-1, data=None):
-        with open(f'saves/{user_id}.json', 'w', encoding='utf-8') as f:
+        with open(f'Govnogame/saves/{user_id}.json', 'w', encoding='utf-8') as f:
             json.dump(data, f, ensure_ascii=False, indent=4)
 
     def load_user_data(self, user_id=-1):
         try:
-            with open(f'saves/{user_id}.json', 'r', encoding='utf-8') as f:
+            with open(f'Govnogame/saves/{user_id}.json', 'r', encoding='utf-8') as f:
                 self.data = json.load(f)
         
         except:
-            with open(f'saves/{user_id}.json', 'w', encoding='utf-8') as f:
+            with open(f'Govnogame/saves/{user_id}.json', 'w', encoding='utf-8') as f:
                 self.data = {
                     "money":  100,
                     "units": 0,
@@ -44,7 +44,7 @@ class Data():
         return map
 
     def load_game_data(self):
-        with open('Game_Data.json', 'r', encoding="utf-8") as f:
+        with open('Govnogame/Game_Data.json', 'r', encoding="utf-8") as f:
             data = json.load(f)
 
         return data
