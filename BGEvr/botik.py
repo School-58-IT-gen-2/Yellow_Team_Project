@@ -3,12 +3,19 @@ from Model.player import *
 from View.ViewTG import ViewTG
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Contact
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler,CallbackQueryHandler
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
+'''
+super_secret_key = os.getenv("SUPER_SECRET_KEY")'''
 class RunGameBot:
     def __init__(self):
         self.txt = ''
         self.player_view =0
-        self.dataloader = LoadData("BGEvr/CONFIGI/data/bot_data.json")
-        self.token = self.dataloader.load_token()
+        #self.dataloader = LoadData("BGEvr/CONFIGI/data/bot_data.json")
+        self.token = os.getenv("TOKEN")
         self.player = 0
         self.used_keyboard = []
         self.main_keyboard = [
