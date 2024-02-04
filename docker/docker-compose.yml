@@ -1,0 +1,6 @@
+version: '3'
+services:
+  hello_logic:
+    image: game-image:0.0.1
+    container_name: hello_logic
+    command: 'python run_bot.py'

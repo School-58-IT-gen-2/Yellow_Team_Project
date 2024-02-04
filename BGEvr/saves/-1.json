@@ -1,4 +1,8 @@
 {
+    "player_position": [
+        1,
+        1
+    ],
     "money": 100,
     "units": 0,
     "map": "default",
