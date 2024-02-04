@@ -4,7 +4,7 @@ from View import render
 class Game():
     def __init__(self, user_id=-1):
         self.user_id = user_id
-        self.data_loader = Data_loader.Data(self.user_id,0)
+        self.data_loader = Data_loader.Data(self.user_id)
         self.user_data = self.data_loader.load_user_data()
         self.building_data = self.data_loader.load_game_data()
         self.render = render.Render()
