@@ -1,5 +1,6 @@
 from Controller import Data_loader
 from View import render
+from PIL import Image
 
 class Game():
     def __init__(self, user_id=-1):
@@ -36,7 +37,7 @@ class Game():
 
 
         else:
-            print("Cant Create")
+            print("Can't Create")
 
 
     def check_can_build(self, maping):
@@ -49,5 +50,8 @@ class Game():
         return True
 
     def show_map(self):
-        self.render.render(self.user_data)
+        self.render.render(self.user_data).show()
+
+    def save_pic(self):
+        self.render.save_pic(self.user_id)
 

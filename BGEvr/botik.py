@@ -8,13 +8,10 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-'''
-super_secret_key = os.getenv("SUPER_SECRET_KEY")'''
 class RunGameBot:
     def __init__(self):
         self.txt = ''
         self.player_view =0
-        #self.dataloader = LoadData("BGEvr/CONFIGI/data/bot_data.json")
         self.token = os.getenv("TOKEN")
         self.player = 0
         self.used_keyboard = []
@@ -41,14 +38,13 @@ class RunGameBot:
     def play_game(self,update : Update,context:CallbackContext):
         self.user = update.message.from_user
         self.player = Player("-1")
-        self.player_view = ViewTG(self.user.id)
-        self.player_view.send_pic(update=update)
+        self.player_view = ViewTG(self.user.id,self.token)
+        self.player_view.send_pic(update=update,callback=CallbackContext)
         reply_markup = InlineKeyboardMarkup(self.main_keyboard)
         update.message.reply_text(f"Чо делать будешь? \n {self.txt}",reply_markup=reply_markup)
     def move_button(self,update:Update,context:CallbackContext):
         query = update.callback_query
         query.answer()
-        print(query.data)
         if query.data == 'mod':
             self.txt += ",".join(self.dataloader.load_player_id())
         if query.data == 'build':

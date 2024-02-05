@@ -6,3 +6,4 @@ game.create_house(name="small_factory", position=[2,3])
 game.create_house(name="small_house", position=[6, 4])
 
 game.show_map()
+game.save_pic()
