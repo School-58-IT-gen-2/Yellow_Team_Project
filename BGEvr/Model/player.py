@@ -32,3 +32,4 @@ class Player:
     def player_info(self):
         return f"{self.progress["money"]} - деняк, \n{self.progress["units"]} - жителей"
     
+    

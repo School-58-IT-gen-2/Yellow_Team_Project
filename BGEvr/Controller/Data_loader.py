@@ -18,18 +18,19 @@ class Data():
                 self.data = json.load(f)
         
         except:
-            with open(f'./saves/{self.user_id}.json', 'w', encoding='utf-8') as f:
-                self.data = {
-                    "money":  100,
-                    "units": 0,
-                    "map": "default",
-                    "map_size": 8,
-
-                    "houses_data": [],
-                    "map_data": self.create_map(size=16)
-                }
-                json.dump(self.data, f, ensure_ascii=False, indent=4)
-        
+            self.data = {
+                "money":  100,
+                "units": 0,
+                "map": "default",
+                "map_size": 8,
+                "player_position": [1,1],
+                "houses_data": [],
+                "map_data": self.create_map(size=16)
+            }
+            with open(f'./saves/{self.user_id}.json', 'w') as file: 
+                dt = json.dumps(self.data)
+                file.write(dt)
+    
         return self.data
 
     def create_map(self, size=16):

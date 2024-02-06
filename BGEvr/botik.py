@@ -5,11 +5,13 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Contact
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler,CallbackQueryHandler
 import os
 from dotenv import load_dotenv
+from View.render import *
 
 load_dotenv()
 
 class RunGameBot:
     def __init__(self):
+        self.render = Render()
         self.txt = ''
         self.player_view =0
         self.token = os.getenv("TOKEN")
@@ -37,7 +39,9 @@ class RunGameBot:
 
     def play_game(self,update : Update,context:CallbackContext):
         self.user = update.message.from_user
-        self.player = Player("-1")
+        self.player = Player(self.user.id)
+        self.render.render(self.player.progress)
+        self.render.save_pic(self.user.id)
         self.player_view = ViewTG(self.user.id,self.token)
         self.player_view.send_pic(update=update,callback=CallbackContext)
         reply_markup = InlineKeyboardMarkup(self.main_keyboard)
@@ -53,5 +57,6 @@ class RunGameBot:
             self.used_keyboard = self.main_keyboard
         if query.data == 'info':
             self.txt += self.player.player_info()
+        
         update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
