@@ -4,17 +4,69 @@
     "map": "default",
     "map_size": 8,
     "player_position": [
-        2,
+        3,
         1
     ],
     "houses_data": [
+        {
+            "type": "small_house",
+            "size": 2,
+            "units_adder": 1,
+            "position": [
+                3,
+                1
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "house.png",
+            "max_level": 5,
+            "on_upgrade": {
+                "units_adder": "100type%"
+            }
+        },
+        {
+            "type": "small_house",
+            "size": 2,
+            "units_adder": 1,
+            "position": [
+                3,
+                3
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "house.png",
+            "max_level": 5,
+            "on_upgrade": {
+                "units_adder": "100type%"
+            }
+        },
         {
             "type": "small_factory",
             "size": 1,
             "units_adder": 1,
             "position": [
-                1,
-                1
+                2,
+                5
+            ],
+            "can_delete": true,
+            "level": 1,
+            "texture": "small_factory.png",
+            "max_level": 5,
+            "modify": {
+                "wood_generation": 1
+            },
+            "on_upgrade": {
+                "units_adder": "100type%",
+                "wood_generation": "100type%"
+            }
+        },
+        {
+            "type": "small_factory",
+            "size": 1,
+            "units_adder": 1,
+            "position": [
+                5,
+                5
             ],
             "can_delete": true,
             "level": 1,

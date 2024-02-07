@@ -68,6 +68,10 @@ class RunGameBot:
             self.player.player_move("d")
         if query.data == 'factory':
             self.player.build_smth("small_factory")
+            self.used_keyboard = self.main_keyboard
+            self.player.progress["player_position"][0] += 1
+        if query.data == 'house_lvl_1':
+            self.player.build_smth("small_house")
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view.send_pic(Update,CallbackContext)

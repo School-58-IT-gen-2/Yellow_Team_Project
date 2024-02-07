@@ -7,7 +7,7 @@
       "position": null,
       "can_delete": true,
       "level": 1,
-      "texture": "small_house.png",
+      "texture": "house.png",
       "max_level": 5,
       "on_upgrade": {
         "units_adder": "100type%"
