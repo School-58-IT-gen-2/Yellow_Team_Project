@@ -20,9 +20,8 @@ class ViewTG():
                 media_file = InputMediaPhoto(open(f'players_images/{self.user_id}.png','rb'))
                 file_size = os.path.getsize(f'players_images/{self.user_id}.png')
                 #logger.warning(file_size)
-                if file_size != self.file_size:
-                    bot.edit_message_media(chat_id=self.user_id,message_id=self.message.message_id,media=media_file)
-                    self.file_size = file_size
+                bot.edit_message_media(chat_id=self.user_id,message_id=self.message.message_id,media=media_file)
+                self.file_size = file_size
         except Exception as error:
             #logger.critical(error)
             bot.send_message(self.user_id,"oh no, something did wrong :(")

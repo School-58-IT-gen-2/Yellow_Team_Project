@@ -45,18 +45,31 @@ class RunGameBot:
         self.player_view = ViewTG(self.user.id,self.token)
         self.player_view.send_pic(update=update,callback=CallbackContext)
         reply_markup = InlineKeyboardMarkup(self.main_keyboard)
-        update.message.reply_text(f"Чо делать будешь? \n {self.txt}",reply_markup=reply_markup)
+        update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
     def move_button(self,update:Update,context:CallbackContext):
         query = update.callback_query
         query.answer()
-        if query.data == 'mod':
-            self.txt += ",".join(self.dataloader.load_player_id())
+        print(query.data)
+        #if query.data == 'mod':
+        #    self.txt += ",".join(self.dataloader.load_player_id())
         if query.data == 'build':
             self.used_keyboard = self.build_keyboard
         if query.data == 'main_page':
             self.used_keyboard = self.main_keyboard
         if query.data == 'info':
             self.txt += self.player.player_info()
-        
+        if query.data == 'u':
+            self.player.player_move("u")
+        if query.data == 'r':
+            self.player.player_move("r")
+        if query.data == 'l':
+            self.player.player_move("l")
+        if query.data == 'd':
+            self.player.player_move("d")
+        if query.data == 'factory':
+            self.player.build_smth("small_factory")
+        self.render.render(self.player.progress)
+        self.render.save_pic(self.user.id)
+        self.player_view.send_pic(Update,CallbackContext)
         update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''

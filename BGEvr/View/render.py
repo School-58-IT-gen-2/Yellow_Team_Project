@@ -13,11 +13,14 @@ class Render:
 
         _one_point_size = 1080//_map_size
         print(_one_point_size)
-
+        _selected = Image.open("./res/selected.png").resize((_one_point_size, _one_point_size))
         for i in range(_map_size):
             for j in range(_map_size):
                 _cycle_ground = Image.open(f"./res/{_ground[random.randint(0, 3)]}").resize((_one_point_size, _one_point_size))
                 self._map.paste(_cycle_ground, (i*_one_point_size, j*_one_point_size))
+                if j == data["player_position"][1] and i == data["player_position"][0]:
+                    self._map.paste(_selected,(i*_one_point_size, j*_one_point_size))
+
 
         for i in range(len(_user_buildings)):
             _building_texture = Image.open(f'./res/{_user_buildings[i]["texture"]}').resize((_one_point_size*_user_buildings[i]["size"], _one_point_size*_user_buildings[i]["size"]))
