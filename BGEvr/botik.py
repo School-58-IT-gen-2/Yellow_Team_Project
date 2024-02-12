@@ -1,6 +1,7 @@
 from CONFIGI.config.load_all_data import LoadData
 from Model.player import *
 from View.ViewTG import ViewTG
+from Controller.Data_loader import Data
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup, Update, Contact
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler,CallbackQueryHandler
 import os
@@ -16,6 +17,8 @@ class RunGameBot:
         self.player_view =0
         self.token = os.getenv("TOKEN")
         self.player = 0
+        self.progress = None
+        self.data_loader = None
         self.used_keyboard = []
         self.main_keyboard = [
             [InlineKeyboardButton("статистика", callback_data='info')],
@@ -28,7 +31,7 @@ class RunGameBot:
             #[InlineKeyboardButton("ЭТО МОДИФИКАЦИ АААААААААААААААААААА",callback_data='mod')]
         ]
         self.build_keyboard = [
-            [InlineKeyboardButton("домик", callback_data='house_lvl_1')],
+            [InlineKeyboardButton(f"домик", callback_data='house_lvl_1')],
             [InlineKeyboardButton("гробик", callback_data='house_lvl_2')],
             [InlineKeyboardButton("домик-парилка", callback_data='house_lvl_3')],
             [InlineKeyboardButton("заводик", callback_data='factory')],
@@ -39,6 +42,8 @@ class RunGameBot:
 
     def play_game(self,update : Update,context:CallbackContext):
         self.user = update.message.from_user
+        self.dataloader = Data(self.user.id)
+        self.progress = self.dataloader.load_user_data()
         self.player = Player(self.user.id)
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
@@ -68,10 +73,13 @@ class RunGameBot:
             self.player.player_move("d")
         if query.data == 'factory':
             self.player.build_smth("small_factory")
-            self.used_keyboard = self.main_keyboard
-            self.player.progress["player_position"][0] += 1
+            self.txt += f'Вы протратили много деняк, у вас осталось {self.progress["money"]} деняк'
         if query.data == 'house_lvl_1':
             self.player.build_smth("small_house")
+            self.txt += f'Вы протратили очень деняк, у вас осталось {self.progress["money"]} деняк'
+        if query.data == 'bank':
+            self.player.build_smth("small_shop")
+            self.txt += f'Вы протратили достаточно деняк, у вас осталось {self.progress["money"]} деняк'
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view.send_pic(Update,CallbackContext)

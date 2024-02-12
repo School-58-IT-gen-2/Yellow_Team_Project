@@ -1,19 +1,21 @@
 {
-    "money": 100,
+    "money": 50,
     "units": 0,
     "map": "default",
     "map_size": 8,
     "player_position": [
-        3,
+        2,
         1
     ],
     "houses_data": [
         {
+            "stage": 0,
+            "price": 10,
             "type": "small_house",
             "size": 2,
             "units_adder": 1,
             "position": [
-                3,
+                1,
                 1
             ],
             "can_delete": true,
@@ -25,28 +27,14 @@
             }
         },
         {
-            "type": "small_house",
-            "size": 2,
-            "units_adder": 1,
-            "position": [
-                3,
-                3
-            ],
-            "can_delete": true,
-            "level": 1,
-            "texture": "house.png",
-            "max_level": 5,
-            "on_upgrade": {
-                "units_adder": "100type%"
-            }
-        },
-        {
+            "stage": 0,
+            "price": 20,
             "type": "small_factory",
             "size": 1,
             "units_adder": 1,
             "position": [
-                2,
-                5
+                4,
+                1
             ],
             "can_delete": true,
             "level": 1,
@@ -61,12 +49,14 @@
             }
         },
         {
+            "stage": 0,
+            "price": 20,
             "type": "small_factory",
             "size": 1,
             "units_adder": 1,
             "position": [
-                5,
-                5
+                2,
+                0
             ],
             "can_delete": true,
             "level": 1,

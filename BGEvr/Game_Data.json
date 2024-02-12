@@ -1,6 +1,8 @@
 {
   "buildings": {
     "small_house": {
+      "stage" : 0,
+      "price" : 10,
       "type": "small_house",
       "size": 2,
       "units_adder": 1,
@@ -14,6 +16,8 @@
       }
     },
     "small_factory": {
+      "stage" : 0,
+      "price" : 20,
       "type": "small_factory",
       "size": 1,
       "units_adder": 1,
@@ -31,13 +35,15 @@
       }
     },
     "small_shop": {
+      "stage" : 0,
+      "price" : 15,
       "type": "small_shop",
       "size": 1,
       "units_adder": 1,
       "position": null,
       "can_delete": true,
       "level": 1,
-      "texture": "small_shop.png",
+      "texture": "bank.png",
       "max_level": 2,
       "modify": {
         "selling_cost": 1,

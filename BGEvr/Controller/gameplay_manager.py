@@ -9,6 +9,7 @@ class Game():
         self.user_data = self.data_loader.load_user_data()
         self.building_data = self.data_loader.load_game_data()
         self.render = render.Render()
+        self.build_price = 0
 
     def create_house(self, name, position):
         self.building_data = self.data_loader.load_game_data()
@@ -24,8 +25,8 @@ class Game():
         if self.check_can_build(map_posing):
             print("Creating")
             _building["position"] = map_posing[0]
-
-
+            self.build_price = _building["price"]
+            self.user_data["money"] -= self.build_price
 
             self.user_data["map_data"] = _map
             self.user_data["houses_data"].append(_building)
