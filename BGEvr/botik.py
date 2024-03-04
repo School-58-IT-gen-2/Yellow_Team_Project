@@ -7,6 +7,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 import os
 from dotenv import load_dotenv
 from View.render import *
+from database_adapter import *
 
 load_dotenv()
 
@@ -38,6 +39,14 @@ class RunGameBot:
             [InlineKeyboardButton("банк", callback_data='bank')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
+
+        db = Adapter("rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net","6432","verify-full","sch58_db","Admin","atdhfkm2024","read-write")
+        db.connect()
+        houses_data = db.select("houses")
+        print(houses_data)
+
+
+
 
 
     def play_game(self,update : Update,context:CallbackContext):
