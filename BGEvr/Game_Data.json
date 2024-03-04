@@ -4,7 +4,7 @@
       "stage" : 0,
       "price" : 10,
       "type": "small_house",
-      "size": 2,
+      "size": 1,
       "units_adder": 1,
       "position": null,
       "can_delete": true,

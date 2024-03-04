@@ -26,6 +26,7 @@ class Game():
             print("Creating")
             _building["position"] = map_posing[0]
             self.build_price = _building["price"]
+            print(_building["price"])
             self.user_data["money"] -= self.build_price
 
             self.user_data["map_data"] = _map
@@ -35,7 +36,6 @@ class Game():
             #print(self.user_data["houses_data"])
             self.data_loader.save_user_data()
             print(self.user_data)
-
 
         else:
             print("Can't Create")

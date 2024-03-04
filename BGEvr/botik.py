@@ -7,7 +7,8 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, Callb
 import os
 from dotenv import load_dotenv
 from View.render import *
-from database_adapter import *
+from Controller.Data_loader import *
+#from database_adapter import *
 
 load_dotenv()
 
@@ -15,10 +16,11 @@ class RunGameBot:
     def __init__(self):
         self.render = Render()
         self.txt = ''
-        self.player_view =0
+        self.player_view =None
         self.token = os.getenv("TOKEN")
-        self.player = 0
+        self.player = None
         self.progress = None
+        self.game_data = None
         self.data_loader = None
         self.used_keyboard = []
         self.main_keyboard = [
@@ -32,33 +34,27 @@ class RunGameBot:
             #[InlineKeyboardButton("ЭТО МОДИФИКАЦИ АААААААААААААААААААА",callback_data='mod')]
         ]
         self.build_keyboard = [
-            [InlineKeyboardButton(f"домик", callback_data='house_lvl_1')],
-            [InlineKeyboardButton("гробик", callback_data='house_lvl_2')],
-            [InlineKeyboardButton("домик-парилка", callback_data='house_lvl_3')],
-            [InlineKeyboardButton("заводик", callback_data='factory')],
-            [InlineKeyboardButton("банк", callback_data='bank')],
+            [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house_lvl_1')],
+            [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
+            [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
+            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
-
-        db = Adapter("rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net","6432","verify-full","sch58_db","Admin","atdhfkm2024","read-write")
-        db.connect()
-        houses_data = db.select("houses")
-        print(houses_data)
-
-
 
 
 
     def play_game(self,update : Update,context:CallbackContext):
+        self.used_keyboard = self.main_keyboard
         self.user = update.message.from_user
-        self.dataloader = Data(self.user.id)
-        self.progress = self.dataloader.load_user_data()
+        self.data_loader = Data(self.user.id)
+        self.game_data = self.data_loader.load_game_data()
+        self.progress = self.data_loader.load_user_data()
         self.player = Player(self.user.id)
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view = ViewTG(self.user.id,self.token)
         self.player_view.send_pic(update=update,callback=CallbackContext)
-        reply_markup = InlineKeyboardMarkup(self.main_keyboard)
+        reply_markup = InlineKeyboardMarkup(self.used_keyboard)
         update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
     def move_button(self,update:Update,context:CallbackContext):
         query = update.callback_query
@@ -82,13 +78,13 @@ class RunGameBot:
             self.player.player_move("d")
         if query.data == 'factory':
             self.player.build_smth("small_factory")
-            self.txt += f'Вы протратили много деняк, у вас осталось {self.progress["money"]} деняк'
+            self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'house_lvl_1':
             self.player.build_smth("small_house")
-            self.txt += f'Вы протратили очень деняк, у вас осталось {self.progress["money"]} деняк'
+            self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
             self.player.build_smth("small_shop")
-            self.txt += f'Вы протратили достаточно деняк, у вас осталось {self.progress["money"]} деняк'
+            self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view.send_pic(Update,CallbackContext)

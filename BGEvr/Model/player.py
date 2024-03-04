@@ -27,6 +27,7 @@ class Player:
     
     def build_smth(self,buiding):
         self.game.create_house(buiding,self.progress["player_position"])
+        self.player_move('d')
 
     def player_info(self):
         return f"{self.progress["money"]} - деняк, \n{self.progress["units"]} - жителей"
