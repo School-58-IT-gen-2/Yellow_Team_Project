@@ -61,11 +61,13 @@ def get_csv():
     """должно быть что-то типо [{},{},...{}]"""
     f = open("cruisers.csv")
     res = []
+    #d = f.read().split("\n")
+    #print(d)
     arr_keys = f.readline().split(',')
     all_data = f.readlines()
-    for i in range(1,len(all_data)):
+    for i in range(len(all_data)):
         data = all_data[i].split(',')
-        data_row_dict = {arr_keys[j]: data[j] for j in range(len(arr_keys))}
+        data_row_dict = {arr_keys[j].replace("\n",""): data[j].replace("\n","") for j in range(len(arr_keys))}
         res.append(data_row_dict)
     return res
             
@@ -78,4 +80,3 @@ db = Adapter(host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname
 db.connect()
 
 data = get_csv()
-print(data)
