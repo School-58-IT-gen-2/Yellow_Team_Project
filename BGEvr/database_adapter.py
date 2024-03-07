@@ -11,6 +11,7 @@ class Adapter():
         self.target_session_attrs=target_session_attrs
         self.conn = None
         self.cursor = None
+        self.schema_name = "Yellow_team_project"
         
     def connect(self):
         try:
@@ -29,53 +30,52 @@ class Adapter():
             print(f'connection error:{error}')
 
     def select(self, table):
-        request = f'SELECT * FROM "Galactic Empire"."{table}"'
-        self.cursor.execute(request)
-        data = self.cursor.fetchall()
-        return data
-    
-    def select_task_1(self):
-        request = f'SELECT * FROM "Galactic Empire"."Cruisers"'
-        self.cursor.execute(request)
-        data = self.cursor.fetchall()
-        return data
-
-    def select_task_2(self):
-        request = f"""SELECT * FROM "Galactic Empire"."Systems" as sys WHERE sys."Allegiance" = 'Empire' ORDER BY id ASC"""
-        self.cursor.execute(request)
-        data = self.cursor.fetchall()
-        return data
-    
-    def select_task_3(self):
-        request = """SELECT * FROM "Galactic Empire"."Planets" as pl WHERE pl."Name" != 'Mityas_planet' AND pl."Population" > 50 ORDER BY pl."Position" ASC;"""
-        self.cursor.execute(request)
-        data = self.cursor.fetchall()
-        return data
-    
-    def select_task_4(self):
-        request = """SELECT * FROM "Galactic Empire"."Planets" as pl WHERE pl."Name" != 'Mityas_planet' AND lower(pl."Name") = pl."Name" AND pl."Population" > 50 ORDER BY pl."Position" ASC;"""
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" """
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data
     
     def update(self, table, request, id):
-        request_update = f'UPDATE "Yellow_team_project"."{table}" SET {request} WHERE id={id}'
+        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE id={id}"""
         self.cursor.execute(request_update)
         self.conn.commit()
 
-    def insert(self, table, collumns, values):
-        request_insert = f'INSERT INTO "Yellow_team_project"."{table}" ({collumns}) VALUES ({values})'
-        self.cursor.execute(request_insert)
+    def insert(self, table, data,insert_type):
+        """insert_type: 1 - вносится список с элементами, 0 - 'одноразовая' акция"""
+        if insert_type:
+            for i in range(len(data)):
+                request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({",".join(list(data[i].keys()))}) VALUES ({",".join(list(data[i].items()))})"""
+                self.cursor.execute(request_insert)
+        else:
+            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({",".join(list(data.keys()))}) VALUES ({",".join(list(data.items()))})"""
+            self.cursor.execute(request_insert)
         self.conn.commit()
+
+    def delete(self,table,id):
+        request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE id = {id}"""
+        self.cursor.execute(request_delete)
+        self.conn.commit()
+
+
+def get_csv():
+    """должно быть что-то типо [{},{},...{}]"""
+    f = open("cruisers.csv")
+    res = []
+    arr_keys = f.readline().split(',')
+    all_data = f.readlines()
+    for i in range(1,len(all_data)):
+        data = all_data[i].split(',')
+        data_row_dict = {arr_keys[j]: data[j] for j in range(len(arr_keys))}
+        res.append(data_row_dict)
+    return res
+            
+
 
 
 
 
 db = Adapter(host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
 db.connect()
-lvl1 = db.select_task_1()
-lvl2 = db.select_task_2()
-lvl3 = db.select_task_3()
-lvl4 = db.select_task_4()
 
-print(lvl1,"\n",lvl2,"\n",lvl3,'\n',lvl4)
+data = get_csv()
+print(data)
