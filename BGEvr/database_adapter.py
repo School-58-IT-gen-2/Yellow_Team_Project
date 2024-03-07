@@ -71,7 +71,7 @@ def get_csv():
         data_row_dict = {arr_keys[j].replace("\n",""): data[j].replace("\n","") for j in range(len(arr_keys))}
         res.append(data_row_dict)
     for j in range(len(res)):
-        for k in range(len(res[0])):
+        for k,v in res[j].items():
             try:
                 res[j][k] = int(res[j][k])
             except:
@@ -88,4 +88,4 @@ db.connect()
 
 data = get_csv()
 print(data)
-#db.insert_batch(table="Cruisers",data=data)
+db.insert_batch(table="Cruisers",data=data)
