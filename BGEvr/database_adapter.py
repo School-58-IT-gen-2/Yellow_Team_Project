@@ -46,9 +46,18 @@ class Adapter():
         self.conn.commit()
 
     def insert_batch(self,table,data):
+        for row in data:
+            for key, value in row.items():
+                if isinstance(row[key], int):
+                    row[key] = str(row[key])
+                elif isinstance(row[key], str):
+                    row[key] = f"'{row[key]}'"
+
         for i in range(len(data)):
-                request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({",".join(list(data[i].keys()))}) VALUES ({",".join(list(data[i].values()))})"""
-                self.cursor.execute(request_insert)
+            names = f'"{'","'.join(list(data[i].keys()))}"'
+            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({names}) VALUES ({",".join(list(data[i].values()))})"""
+            print(request_insert)
+            self.cursor.execute(request_insert)
         self.conn.commit()
 
 
