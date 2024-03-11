@@ -1,4 +1,5 @@
 import psycopg2
+import random
 class Adapter():
 
     def __init__(self, host, port, sslmode, dbname,schema_name, user, password, target_session_attrs):
@@ -66,6 +67,13 @@ class Adapter():
         self.cursor.execute(request_delete)
         self.conn.commit()
 
+    def delete_batch(self,table,list_id):
+        for i in list_id:
+            request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE id = {i}"""
+            self.cursor.execute(request_delete)
+            print(request_delete)
+        self.conn.commit()
+
 
 def get_csv():
     """должно быть что-то типо [{},{},...{}]"""
@@ -88,8 +96,14 @@ def get_csv():
     return res
             
 
+"""def generate_example_data():
+    data = []
+    houses = ['factory','house','bank']
+    for i in range(3,1000):
+        t = {"type": houses[random.randint(0,2)],"pos_x" : random.randint(0,16),"pos_y" : random.randint(0,16), "house_level" :  random.randint(0,5)}
+        data.append(t)
 
-
+    return data"""
 
 
 db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
@@ -97,4 +111,14 @@ db.connect()
 
 data = get_csv()
 print(data)
-db.insert_batch(table="Cruisers",data=data)
+db.insert_batch("Cruisers",data)
+#db.insert_batch("houses",data = generate_example_data())
+#db.delete_batch("houses",list_id=list(range(1213,2210)))
+
+
+#db.delete("user_info",id = 1)
+
+
+
+
+
