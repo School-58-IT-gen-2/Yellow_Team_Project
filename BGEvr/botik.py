@@ -67,7 +67,7 @@ class RunGameBot:
                 _res += 1
 
         if _res == 0:
-            self.db.insert_batch("user_info",[{"pos x" : 1,"pos y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.first_name}])
+            self.db.insert_batch("user_info",[{"pos x" : 1,"pos y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}])
             
 
 
