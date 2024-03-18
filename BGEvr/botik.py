@@ -8,13 +8,17 @@ import os
 from dotenv import load_dotenv
 from View.render import *
 from Controller.Data_loader import *
-#from database_adapter import *
+from database_adapter import *
+from datetime import datetime
+
+
 
 load_dotenv()
 
 class RunGameBot:
     def __init__(self):
         self.render = Render()
+        self.new_gamer = False
         self.txt = ''
         self.player_view =None
         self.token = os.getenv("TOKEN")
@@ -22,6 +26,8 @@ class RunGameBot:
         self.progress = None
         self.game_data = None
         self.data_loader = None
+        self.db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+        self.db.connect()
         self.used_keyboard = []
         self.main_keyboard = [
             [InlineKeyboardButton("статистика", callback_data='info')],
@@ -42,7 +48,6 @@ class RunGameBot:
         ]
 
 
-
     def play_game(self,update : Update,context:CallbackContext):
         self.used_keyboard = self.main_keyboard
         self.user = update.message.from_user
@@ -56,6 +61,17 @@ class RunGameBot:
         self.player_view.send_pic(update=update,callback=CallbackContext)
         reply_markup = InlineKeyboardMarkup(self.used_keyboard)
         update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
+        _res = 0
+        for i in self.db.select("user_info"):
+            if self.user.id in i:
+                _res += 1
+
+        if _res == 0:
+            self.db.insert_batch("user_info",[{"pos x" : 1,"pos y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.first_name}])
+            
+
+
+
     def move_button(self,update:Update,context:CallbackContext):
         query = update.callback_query
         query.answer()
@@ -90,3 +106,5 @@ class RunGameBot:
         self.player_view.send_pic(Update,CallbackContext)
         update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
+        get_request = f"updated={int(datetime.now().timestamp())}"
+        self.db.update("user_info",get_request,self.user.id)

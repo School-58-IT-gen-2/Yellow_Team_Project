@@ -138,3 +138,8 @@ backup.dump
 backup.dump.gz
 .vscode
 .python_history
+
+
+
+BGEvr\test.py
+BGEvr/test.py
