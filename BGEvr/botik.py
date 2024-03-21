@@ -54,7 +54,7 @@ class RunGameBot:
         self.data_loader = Data(self.user.id)
         self.game_data = self.data_loader.load_game_data()
         self.progress = self.data_loader.load_user_data()
-        self.player = Player(self.user.id)
+        self.player = Player(self.user.id,self.db)
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view = ViewTG(self.user.id,self.token)
@@ -67,7 +67,7 @@ class RunGameBot:
                 _res += 1
 
         if _res == 0:
-            self.db.insert_batch("user_info",[{"pos x" : 1,"pos y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}])
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}])
             
 
 
@@ -104,7 +104,7 @@ class RunGameBot:
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view.send_pic(Update,CallbackContext)
+        get_request = f"""updated={int(datetime.now().timestamp())},pos_x = {self.player.player_pos_x},pos_y = {self.player.player_pos_y}"""
+        self.db.update("user_info",get_request,self.user.id)
         update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
-        get_request = f"""updated={int(datetime.now().timestamp())},pos x = {self.player.player_pos_x},pos y = {self.player.player_pos_y}"""
-        self.db.update("user_info",get_request,self.user.id)

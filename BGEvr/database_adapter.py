@@ -36,8 +36,16 @@ class Adapter():
         data = self.cursor.fetchall()
         return data
     
+
+    def select_by_user_id(self, table,user_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE user_id = {user_id}"""
+        self.cursor.execute(request)
+        data = self.cursor.fetchall()
+        return data
+    
     def update(self, table, request, id):
         request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE user_id={id}"""
+        print(request_update)
         self.cursor.execute(request_update)
         self.conn.commit()
 
@@ -53,15 +61,14 @@ class Adapter():
                     row[key] = str(row[key])
                 elif isinstance(row[key], str):
                     row[key] = f"'{row[key]}'"
-
+        t = []
         for i in range(len(data)):
             names = f'"{'","'.join(list(data[i].keys()))}"'
-            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({names}) VALUES ({",".join(list(data[i].values()))})"""
+            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({names}) VALUES ({",".join(list(data[i].values()))})""" # RETURNS {id_name}
             print(request_insert)
             self.cursor.execute(request_insert)
         self.conn.commit()
-
-
+        return t
     def delete(self,table,id):
         request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE user_id = {id}"""
         self.cursor.execute(request_delete)
