@@ -106,5 +106,5 @@ class RunGameBot:
         self.player_view.send_pic(Update,CallbackContext)
         update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
-        get_request = f"updated={int(datetime.now().timestamp())}"
+        get_request = f"""updated={int(datetime.now().timestamp())},pos x = {self.player.player_pos_x},pos y = {self.player.player_pos_y}"""
         self.db.update("user_info",get_request,self.user.id)
