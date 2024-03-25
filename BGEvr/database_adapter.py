@@ -1,5 +1,4 @@
 import psycopg2
-import random
 class Adapter():
 
     def __init__(self, host, port, sslmode, dbname,schema_name, user, password, target_session_attrs):
@@ -35,10 +34,19 @@ class Adapter():
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data
+        #[(),(),...,()]
     
 
     def select_by_user_id(self, table,user_id):
         request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE user_id = {user_id}"""
+        self.cursor.execute(request)
+        data = self.cursor.fetchall()
+        return data
+        # ()
+    
+
+    def select_by_house_id(self, table,user_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE house_id = {user_id}"""
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data
@@ -73,7 +81,7 @@ class Adapter():
         request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE user_id = {id}"""
         self.cursor.execute(request_delete)
         self.conn.commit()
-
+    # list_id = ['dimon'...]
     def delete_batch(self,table,list_id):
         for i in list_id:
             request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE user_id = {i}"""
@@ -82,8 +90,28 @@ class Adapter():
         self.conn.commit()
 
 
+    def task_1(self):
+        req = """SELECT * FROM "Galactic Empire"."Cruisers" as cr WHERE cr."Captain" SIMILAR TO '(L)%' and cr."Crew" < 200;"""
+        self.cursor.execute(req)
+        data = self.cursor.fetchall()
+        return data
+    
+    def task_2(self):
+        req = """SELECT pt."Name", pt."id", COUNT(pl."Type") FROM "Galactic Empire"."Planet Types" pt LEFT JOIN "Galactic Empire"."Planets" pl ON pl."Type" = pt.id GROUP BY pt."id" ORDER BY COUNT(pl."Type") DESC;"""
+        self.cursor.execute(req)
+        data = self.cursor.fetchall()
+        return data
+
+    def task_3(self):
+        req = """"""
+        self.cursor.execute(req)
+        data = self.cursor.fetchall()
+        return data
+
+
 #db.insert_batch("houses",data = {...})
-
-
-
-
+"""db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+db.connect()
+print(db.task_1())
+print(db.task_2())"""
+#print(db.task_3())

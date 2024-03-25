@@ -31,14 +31,13 @@ class Game():
             #self.user_data["map_data"] = _map
             #self.user_data["houses_data"].append(_building)
             _house_id = self.db.insert_batch("houses",[{"type" : _building["type"],"pos_x" : self.player.player_pos_x,"pos_y" : self.player.player_pos_y,"house_level" : 1}])[0]
-            str_of_houses = self.db.select_by_user_id("user_info",self.user_id)[3]
+            str_of_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
             if str_of_houses == 'no_buildings':
-                str_of_houses = str(_house_id)
+                str_of_houses = str(_house_id) 
             else:
                 str_of_houses += ','
                 str_of_houses += str(_house_id)
             building_request = f"""house_id = {str_of_houses}"""
-            
             self.db.update("user_info",building_request,self.user_id)
             #print(_building["position"], "building complete pos")
             #print(_building["position"], "Ready Pos\n\n")
