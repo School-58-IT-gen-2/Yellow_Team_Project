@@ -46,7 +46,7 @@ class Adapter():
         self.cursor.execute(request_insert)
         self.conn.commit()
 
-    def insert_batch(self,table,data):
+    def insert_batch(self,table,data,id_name):
         for row in data:
             for key, value in row.items():
                 if isinstance(row[key], int):
@@ -56,10 +56,12 @@ class Adapter():
 
         for i in range(len(data)):
             names = f'"{'","'.join(list(data[i].keys()))}"'
-            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({names}) VALUES ({",".join(list(data[i].values()))})"""
+            request_insert = f"""INSERT INTO "{self.schema_name}"."{table}" ({names}) VALUES ({",".join(list(data[i].values()))}) RETURNING {id_name} """
             print(request_insert)
             self.cursor.execute(request_insert)
         self.conn.commit()
+        t = self.cursor.fetchall()
+        return t
 
 
     def delete(self,table,id):
@@ -73,10 +75,5 @@ class Adapter():
             self.cursor.execute(request_delete)
             print(request_delete)
         self.conn.commit()
-
-
-#db.insert_batch("houses",data = {...})
-
-
 
 
