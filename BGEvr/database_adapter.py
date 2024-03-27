@@ -93,3 +93,26 @@ class Adapter():
         self.conn.commit()
 
 
+    def task_1(self):
+        req = """SELECT * FROM "Galactic Empire"."Cruisers" as cr WHERE cr."Captain" SIMILAR TO '(L)%' and cr."Crew" < 200;"""
+        self.cursor.execute(req)
+        data = self.cursor.fetchall()
+        return data
+
+    def task_2(self):
+        req = """SELECT pt."Name", pt."id", COUNT(pl."Type") FROM "Galactic Empire"."Planet Types" pt LEFT JOIN "Galactic Empire"."Planets" pl ON pl."Type" = pt.id GROUP BY pt."id" ORDER BY COUNT(pl."Type") DESC;"""
+        self.cursor.execute(req)
+        data = self.cursor.fetchall()
+        return data
+
+    def task_3(self):
+        return "не получилося :_("
+
+
+#db.insert_batch("houses",data = {...})
+"""db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+db.connect()"""
+"""print(db.task_1())
+print("\n\n\n")
+print(db.task_2())"""
+
