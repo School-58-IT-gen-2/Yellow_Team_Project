@@ -10,7 +10,7 @@ class Game():
         self.user_id = user_id
         self.data_loader = Data(self.user_id)
         self.building_data = self.data_loader.load_game_data()
-        self.render = render.Render(self.db)
+        self.render = render.Render(self.db,self.user_id)
 
     def create_house(self, name, position):
         _building = self.building_data["buildings"][name]
@@ -36,7 +36,7 @@ class Game():
                 t = str_of_houses.split(",")
                 t.append(str(_house_id[0]))
                 str_of_houses = f"'{",".join(t)}'"
-            building_request = f"""house_id = {str_of_houses}"""
+            building_request = f"""house_id = {str_of_houses},money={self.player.player_money}"""
             self.db.update("user_info",building_request,self.user_id)
             #print(_building["position"], "building complete pos")
             #print(_building["position"], "Ready Pos\n\n")
@@ -51,6 +51,8 @@ class Game():
     def check_can_build(self):
         _res = True
         _houses_id = self.db.select_by_user_id("user_info",self.user_id)[0][3]
+        if _houses_id == 'no_buildings':
+            return True
         _houses_id = list(map(int,_houses_id.split(',')))
         player_pos_x = self.db.select_by_user_id("user_info",self.user_id)[0][0]
         player_pos_y = self.db.select_by_user_id("user_info",self.user_id)[0][1]

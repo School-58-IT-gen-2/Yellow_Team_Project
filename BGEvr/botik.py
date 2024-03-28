@@ -15,7 +15,6 @@ load_dotenv()
 
 class RunGameBot:
     def __init__(self):
-        self.render = Render()
         self.new_gamer = False
         self.txt = ''
         self.player_view =None
@@ -26,6 +25,7 @@ class RunGameBot:
         self.data_loader = None
         self.db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
         self.db.connect()
+        self.render = None
         self.used_keyboard = []
         self.main_keyboard = [
             [InlineKeyboardButton("статистика", callback_data='info')],
@@ -49,9 +49,15 @@ class RunGameBot:
     def play_game(self,update : Update,context:CallbackContext):
         self.used_keyboard = self.main_keyboard
         self.user = update.message.from_user
+        _res = 0
+        for i in self.db.select("user_info"):
+            if self.user.id in i:
+                _res += 1
+        if _res == 0:
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}],id_name='user_id')
         self.data_loader = Data(self.user.id)
+        self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
-        self.progress = self.data_loader.load_user_data()
         self.player = Player(self.user.id,self.db)
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
@@ -59,13 +65,6 @@ class RunGameBot:
         self.player_view.send_pic(update=update,callback=CallbackContext)
         reply_markup = InlineKeyboardMarkup(self.used_keyboard)
         update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
-        _res = 0
-        for i in self.db.select("user_info"):
-            if self.user.id in i:
-                _res += 1
-        if _res == 0:
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}])
-            
 
 
 
@@ -75,6 +74,8 @@ class RunGameBot:
         print(query.data)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
+        if query.data == 'next_turn':
+            self.player.next_turn()
         if query.data == 'build':
             self.used_keyboard = self.build_keyboard
         if query.data == 'main_page':

@@ -14,6 +14,9 @@ class Player:
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
+        t = self.db.select_by_user_id("user_info",self.user_id)[0][3]
+        self.pay_for_turn = len(t.split(","))
+        #print(self.pay_for_turn)
 
 
 
@@ -45,13 +48,20 @@ class Player:
         
     
     def next_turn(self):
-        pass
+        self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
+        self.player_money += self.pay_for_turn
+        self.player_units += (self.pay_for_turn//4)
+        req = f"""money = {self.player_money}"""
+        self.db.update("user_info",req,id=self.user_id)
     
     def build_smth(self,buiding):
         self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
         self.player_move('d')
 
     def player_info(self):
+        self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших симпов, Милорд - {self.player_units}"
     
     

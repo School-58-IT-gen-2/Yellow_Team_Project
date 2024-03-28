@@ -34,10 +34,10 @@
         "wood_generation": "100type%"
       }
     },
-    "small_shop": {
+    "bank": {
       "stage" : 0,
       "price" : 15,
-      "type": "small_shop",
+      "type": "bank",
       "size": 1,
       "units_adder": 1,
       "position": null,
