@@ -10,7 +10,7 @@ class Game():
         self.user_id = user_id
         self.data_loader = Data(self.user_id)
         self.building_data = self.data_loader.load_game_data()
-        self.render = render.Render()
+        self.render = render.Render(self.db)
 
     def create_house(self, name, position):
         _building = self.building_data["buildings"][name]

@@ -52,6 +52,6 @@ class Player:
         self.player_move('d')
 
     def player_info(self):
-        return f"{self.progress["money"]} - деняк, \n{self.progress["units"]} - жителей"
+        return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших симпов, Милорд - {self.player_units}"
     
     
