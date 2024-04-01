@@ -110,9 +110,9 @@ class Adapter():
 
 
 #db.insert_batch("houses",data = {...})
-"""db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
-db.connect()"""
-"""print(db.task_1())
+db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+db.connect()
+print(db.task_1())
 print("\n\n\n")
-print(db.task_2())"""
+print(db.task_2())
 

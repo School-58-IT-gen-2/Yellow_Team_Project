@@ -99,6 +99,7 @@ class RunGameBot:
         if query.data == 'bank':
             self.player.build_smth("small_shop")
             self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
+        #self.player.next_turn()
         self.render.render(self.player.progress)
         self.render.save_pic(self.user.id)
         self.player_view.send_pic(Update,CallbackContext)

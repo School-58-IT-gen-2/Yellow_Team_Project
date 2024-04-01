@@ -24,20 +24,21 @@ class Game():
         if self.check_can_build():
             _building["position"] = map_posing[0]
             self.build_price = _building["price"]
-            self.player.player_money -= self.build_price
+            if self.player.player_money > self.build_price:
+                self.player.player_money -= self.build_price
 
-            #self.user_data["map_data"] = _map
-            #self.user_data["houses_data"].append(_building)
-            _house_id = self.db.insert_batch("houses",[{"type" : _building["type"],"pos_x" : self.player.player_pos_x,"pos_y" : self.player.player_pos_y,"house_level" : 1}],id_name = 'id')[0]
-            str_of_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
-            if str_of_houses == 'no_buildings':
-                str_of_houses = str(_house_id[0]) 
-            else:
-                t = str_of_houses.split(",")
-                t.append(str(_house_id[0]))
-                str_of_houses = f"'{",".join(t)}'"
-            building_request = f"""house_id = {str_of_houses},money={self.player.player_money}"""
-            self.db.update("user_info",building_request,self.user_id)
+                #self.user_data["map_data"] = _map
+                #self.user_data["houses_data"].append(_building)
+                _house_id = self.db.insert_batch("houses",[{"type" : _building["type"],"pos_x" : self.player.player_pos_x,"pos_y" : self.player.player_pos_y,"house_level" : 1}],id_name = 'id')[0]
+                str_of_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
+                if str_of_houses == 'no_buildings':
+                    str_of_houses = str(_house_id[0]) 
+                else:
+                    t = str_of_houses.split(",")
+                    t.append(str(_house_id[0]))
+                    str_of_houses = f"'{",".join(t)}'"
+                building_request = f"""house_id = {str_of_houses},money={self.player.player_money}"""
+                self.db.update("user_info",building_request,self.user_id)
             #print(_building["position"], "building complete pos")
             #print(_building["position"], "Ready Pos\n\n")
             #print(self.user_data["houses_data"])
