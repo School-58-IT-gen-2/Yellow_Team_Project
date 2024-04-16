@@ -19,11 +19,13 @@ class Player:
         #print(self.pay_for_turn)
 
     def player_move(self,move, user_id):
-        self.player_pos_x = self.db.select_by_user_id("user_info", user_id)[0][0]
-        self.player_pos_y = self.db.select_by_user_id("user_info", user_id)[0][1]
-        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
-        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
-        self.progress = {"x": self.player_pos_x, "y": self.player_pos_y}
+        db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
+                          port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
+                          target_session_attrs="read-write")
+        db.connect()
+        player_pos_x = db.select_by_user_id("user_info", user_id)[0][0]
+        player_pos_y = db.select_by_user_id("user_info", user_id)[0][1]
+        progress = {"x": player_pos_x, "y": player_pos_y}
 
         #print(len(self.progress["map_data"][0]))
         """self.progress = self.dataloader.load_user_data()
@@ -38,28 +40,20 @@ class Player:
         else:
             print("куда валишь??77?7??777777?77?7")
         self.dataloader.save_user_data("""
-        if move == 'u' and self.player_pos_x > 0:
-            self.player_pos_x -= 1
-        if move == 'd' and self.player_pos_x < 7:
-            self.player_pos_x += 1
-        if move == 'r' and self.player_pos_y < 7:
-            self.player_pos_y += 1
-        if move == 'l' and self.player_pos_y > 0:
-            self.player_pos_y -= 1
-        self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
-        move_request = f"""pos_x = {self.player_pos_x},pos_y = {self.player_pos_y}"""
-        self.db.update("user_info",move_request,self.user_id)
+        if move == 'u' and player_pos_x > 0:
+            player_pos_x -= 1
+        if move == 'd' and player_pos_x < 7:
+            player_pos_x += 1
+        if move == 'r' and player_pos_y < 7:
+            player_pos_y += 1
+        if move == 'l' and player_pos_y > 0:
+            player_pos_y -= 1
+        progress = {"x" : player_pos_x,"y" : player_pos_y}
+        move_request = f"""pos_x = {player_pos_x},pos_y = {player_pos_y}"""
+        db.update("user_info",move_request,user_id)
         
     
     def next_turn(self, user_id):
-        self.player_pos_x = self.db.select_by_user_id("user_info", user_id)[0][0]
-        self.player_pos_y = self.db.select_by_user_id("user_info", user_id)[0][1]
-        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
-        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
-        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
-        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
-        self.progress = {"x": self.player_pos_x, "y": self.player_pos_y}
-
         houses_data = {
             "small_house": [0, 10],
             "small_factory": [10, 0]
@@ -69,6 +63,11 @@ class Player:
                           port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
                           target_session_attrs="read-write")
         self.db.connect()
+        
+        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
+        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
 
         user_houses = self.db.select_by_user_id("user_info", user_id)[0][3]
         if user_houses == "no_buildings":

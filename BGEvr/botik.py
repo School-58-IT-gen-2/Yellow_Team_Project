@@ -53,8 +53,7 @@ class RunGameBot:
         for i in self.db.select("user_info"):
             if self.user.id in i:
                 _res += 1
-        if _res == 0:
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10}],id_name='user_id')
+
         self.data_loader = Data(self.user.id)
         self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
@@ -62,9 +61,13 @@ class RunGameBot:
         self.render.render(self.player.progress, self.user.id)
         self.render.save_pic(self.user.id)
         self.player_view = ViewTG(self.user.id,self.token)
-        self.player_view.send_pic(update=update,callback=CallbackContext, user_id=self.user.id)
+        message = self.player_view.send_pic(update=update,callback=CallbackContext, user_id=self.user.id, message_id=None)
         reply_markup = InlineKeyboardMarkup(self.used_keyboard)
         update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
+        if _res == 0:
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": message.message_id}],id_name='user_id')
+        get_request = f"""updated={int(datetime.now().timestamp())},last_img_id = {message.message_id}"""
+        self.db.update("user_info", get_request, self.user.id)
 
 
 
@@ -73,11 +76,11 @@ class RunGameBot:
         query = update.callback_query
         query.answer()
         print(query.data)
-        self.player = Player(query.from_user.id, self.db)
+        player = Player(query.from_user.id, self.db)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
         if query.data == 'next_move':
-            self.player.next_turn(query.from_user.id)
+            player.next_turn(query.from_user.id)
             update_usage = True
         if query.data == 'build':
             self.used_keyboard = self.build_keyboard
@@ -86,36 +89,37 @@ class RunGameBot:
         if query.data == 'info':
             self.txt += self.player.player_info(query.from_user.id)
         if query.data == 'u':
-            self.player.player_move("u", query.from_user.id)
+            player.player_move("u", query.from_user.id)
             update_usage = True
         if query.data == 'r':
-            self.player.player_move("r", query.from_user.id)
+            player.player_move("r", query.from_user.id)
             update_usage = True
         if query.data == 'l':
-            self.player.player_move("l", query.from_user.id)
+            player.player_move("l", query.from_user.id)
             update_usage = True
         if query.data == 'd':
-            self.player.player_move("d", query.from_user.id)
+            player.player_move("d", query.from_user.id)
             update_usage = True
         if query.data == 'factory':
-            self.player.build_smth("small_factory", query.from_user.id)
+            player.build_smth("small_factory", query.from_user.id)
             update_usage = True
             self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'house_lvl_1':
-            self.player.build_smth("small_house", query.from_user.id)
+            player.build_smth("small_house", query.from_user.id)
             update_usage = True
             self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            self.player.build_smth("small_shop", query.from_user.id)
+            player.build_smth("small_shop", query.from_user.id)
             update_usage = True
             self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         #self.player.next_turn()
         self.render.render(self.player.progress, query.from_user.id)
         self.render.save_pic(query.from_user.id)
         if update_usage:
-            self.player_view.send_pic(Update,CallbackContext, query.from_user.id)
+            self.player_view.send_pic(Update,CallbackContext, query.from_user.id, query.message.message_id, db=self.db)
         #REQUEST = f"""var_1 = {...},var_2 = {...}"""
         get_request = f"""updated={int(datetime.now().timestamp())},pos_x = {self.player.player_pos_x},pos_y = {self.player.player_pos_y}"""
         self.db.update("user_info",get_request,self.user.id)
-        update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
+        if query.message.text != "Чё делать будешь?":
+            update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
