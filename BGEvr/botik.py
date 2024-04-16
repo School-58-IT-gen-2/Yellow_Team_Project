@@ -10,7 +10,7 @@ from View.render import *
 from Controller.Data_loader import *
 from database_adapter import *
 from datetime import datetime
-
+from Model import player
 load_dotenv()
 
 class RunGameBot:
@@ -25,7 +25,7 @@ class RunGameBot:
         self.data_loader = None
         self.db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
         self.db.connect()
-        self.render = None
+        self.render = Render
         self.used_keyboard = []
         self.main_keyboard = [
             [InlineKeyboardButton("статистика", callback_data='info')],
@@ -54,7 +54,7 @@ class RunGameBot:
             if self.user.id in i:
                 _res += 1
         if _res == 0:
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name}],id_name='user_id')
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10}],id_name='user_id')
         self.data_loader = Data(self.user.id)
         self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
@@ -74,7 +74,7 @@ class RunGameBot:
         print(query.data)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
-        if query.data == 'next_turn':
+        if query.data == 'next_move':
             self.player.next_turn()
         if query.data == 'build':
             self.used_keyboard = self.build_keyboard

@@ -45,8 +45,8 @@ class Adapter():
         # ()
     
 
-    def select_by_house_id(self, table,user_id):
-        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE house_id = {user_id}"""
+    def select_by_house_id(self, table,house_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE id = {house_id}"""
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data

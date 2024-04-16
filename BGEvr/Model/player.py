@@ -36,9 +36,9 @@ class Player:
         self.dataloader.save_user_data("""
         if move == 'u' and self.player_pos_x > 0:
             self.player_pos_x -= 1
-        if move == 'd' and self.player_pos_x < 8:
+        if move == 'd' and self.player_pos_x < 7:
             self.player_pos_x += 1
-        if move == 'r' and self.player_pos_y < 8:
+        if move == 'r' and self.player_pos_y < 7:
             self.player_pos_y += 1
         if move == 'l' and self.player_pos_y > 0:
             self.player_pos_y -= 1
@@ -48,20 +48,38 @@ class Player:
         
     
     def next_turn(self):
-        self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
-        self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
-        self.player_units += (self.pay_for_turn//4)# экономика
-        self.player_money += (self.pay_for_turn + self.player_units//2)#экономика
+        houses_data = {
+            "small_house": [0, 10],
+            "small_factory": [10, 0]
+        }
+
+        self.db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
+                          port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
+                          target_session_attrs="read-write")
+        self.db.connect()
+
+        user_houses = self.db.select_by_user_id("user_info", self.user_id)[0][3]
+        if user_houses == "no_buildings":
+            return
+        user_houses = list(map(int, user_houses.split(',')))
+
+        self.player_money = self.db.select_by_user_id("user_info", self.user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", self.user_id)[0][2]
+
+        for i in user_houses:
+            house = self.db.select_by_house_id(table="houses", house_id=i)[0][0]
+            print(house)
+            self.player_money += houses_data[house][0]
+            self.player_units += houses_data[house][1]
+
         req = f"""money = {self.player_money},units = {self.player_units}"""
-        self.db.update("user_info",req,id=self.user_id)
+        self.db.update("user_info", req, id=self.user_id)
+
     
     def build_smth(self,buiding):
         self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
-        self.player_move('d')
 
     def player_info(self):
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших жителей, Милорд - {self.player_units}"
-    
-    
