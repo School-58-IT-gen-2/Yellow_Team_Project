@@ -118,7 +118,7 @@ class RunGameBot:
         if update_usage:
             self.player_view.send_pic(Update,CallbackContext, query.from_user.id, query.message.message_id, db=self.db)
         #REQUEST = f"""var_1 = {...},var_2 = {...}"""
-        get_request = f"""updated={int(datetime.now().timestamp())},pos_x = {self.player.player_pos_x},pos_y = {self.player.player_pos_y}"""
+        get_request = f"""updated={int(datetime.now().timestamp())}"""
         self.db.update("user_info",get_request,self.user.id)
         if query.message.text != "Чё делать будешь?":
             update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))

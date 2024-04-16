@@ -25,6 +25,7 @@ class Player:
         db.connect()
         player_pos_x = db.select_by_user_id("user_info", user_id)[0][0]
         player_pos_y = db.select_by_user_id("user_info", user_id)[0][1]
+        print(f"DO : x {player_pos_x} y {player_pos_y}")
         progress = {"x": player_pos_x, "y": player_pos_y}
 
         #print(len(self.progress["map_data"][0]))
@@ -51,6 +52,7 @@ class Player:
         progress = {"x" : player_pos_x,"y" : player_pos_y}
         move_request = f"""pos_x = {player_pos_x},pos_y = {player_pos_y}"""
         db.update("user_info",move_request,user_id)
+        print(f"POSLE : x {player_pos_x} y {player_pos_y}")
         
     
     def next_turn(self, user_id):
