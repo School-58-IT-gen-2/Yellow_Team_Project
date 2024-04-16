@@ -18,9 +18,13 @@ class Player:
         self.pay_for_turn = len(t.split(","))
         #print(self.pay_for_turn)
 
+    def player_move(self,move, user_id):
+        self.player_pos_x = self.db.select_by_user_id("user_info", user_id)[0][0]
+        self.player_pos_y = self.db.select_by_user_id("user_info", user_id)[0][1]
+        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
+        self.progress = {"x": self.player_pos_x, "y": self.player_pos_y}
 
-
-    def player_move(self,move):
         #print(len(self.progress["map_data"][0]))
         """self.progress = self.dataloader.load_user_data()
         if move == 'u' and self.progress["player_position"][1] > 0:
@@ -47,7 +51,15 @@ class Player:
         self.db.update("user_info",move_request,self.user_id)
         
     
-    def next_turn(self):
+    def next_turn(self, user_id):
+        self.player_pos_x = self.db.select_by_user_id("user_info", user_id)[0][0]
+        self.player_pos_y = self.db.select_by_user_id("user_info", user_id)[0][1]
+        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
+        self.player_money = self.db.select_by_user_id("user_info", user_id)[0][8]
+        self.player_units = self.db.select_by_user_id("user_info", user_id)[0][2]
+        self.progress = {"x": self.player_pos_x, "y": self.player_pos_y}
+
         houses_data = {
             "small_house": [0, 10],
             "small_factory": [10, 0]
@@ -58,13 +70,10 @@ class Player:
                           target_session_attrs="read-write")
         self.db.connect()
 
-        user_houses = self.db.select_by_user_id("user_info", self.user_id)[0][3]
+        user_houses = self.db.select_by_user_id("user_info", user_id)[0][3]
         if user_houses == "no_buildings":
             return
         user_houses = list(map(int, user_houses.split(',')))
-
-        self.player_money = self.db.select_by_user_id("user_info", self.user_id)[0][8]
-        self.player_units = self.db.select_by_user_id("user_info", self.user_id)[0][2]
 
         for i in user_houses:
             house = self.db.select_by_house_id(table="houses", house_id=i)[0][0]
@@ -73,13 +82,13 @@ class Player:
             self.player_units += houses_data[house][1]
 
         req = f"""money = {self.player_money},units = {self.player_units}"""
-        self.db.update("user_info", req, id=self.user_id)
+        self.db.update("user_info", req, id=user_id)
 
     
-    def build_smth(self,buiding):
+    def build_smth(self,buiding, user_id):
         self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
 
-    def player_info(self):
+    def player_info(self, user_id):
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших жителей, Милорд - {self.player_units}"

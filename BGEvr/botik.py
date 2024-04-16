@@ -59,50 +59,61 @@ class RunGameBot:
         self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
         self.player = Player(self.user.id,self.db)
-        self.render.render(self.player.progress)
+        self.render.render(self.player.progress, self.user.id)
         self.render.save_pic(self.user.id)
         self.player_view = ViewTG(self.user.id,self.token)
-        self.player_view.send_pic(update=update,callback=CallbackContext)
+        self.player_view.send_pic(update=update,callback=CallbackContext, user_id=self.user.id)
         reply_markup = InlineKeyboardMarkup(self.used_keyboard)
         update.message.reply_text(f"Чё делать будешь? \n {self.txt}",reply_markup=reply_markup)
 
 
 
     def move_button(self,update:Update,context:CallbackContext):
+        update_usage = False
         query = update.callback_query
         query.answer()
         print(query.data)
+        self.player = Player(query.from_user.id, self.db)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
         if query.data == 'next_move':
-            self.player.next_turn()
+            self.player.next_turn(query.from_user.id)
+            update_usage = True
         if query.data == 'build':
             self.used_keyboard = self.build_keyboard
         if query.data == 'main_page':
             self.used_keyboard = self.main_keyboard
         if query.data == 'info':
-            self.txt += self.player.player_info()
+            self.txt += self.player.player_info(query.from_user.id)
         if query.data == 'u':
-            self.player.player_move("u")
+            self.player.player_move("u", query.from_user.id)
+            update_usage = True
         if query.data == 'r':
-            self.player.player_move("r")
+            self.player.player_move("r", query.from_user.id)
+            update_usage = True
         if query.data == 'l':
-            self.player.player_move("l")
+            self.player.player_move("l", query.from_user.id)
+            update_usage = True
         if query.data == 'd':
-            self.player.player_move("d")
+            self.player.player_move("d", query.from_user.id)
+            update_usage = True
         if query.data == 'factory':
-            self.player.build_smth("small_factory")
+            self.player.build_smth("small_factory", query.from_user.id)
+            update_usage = True
             self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'house_lvl_1':
-            self.player.build_smth("small_house")
+            self.player.build_smth("small_house", query.from_user.id)
+            update_usage = True
             self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            self.player.build_smth("small_shop")
+            self.player.build_smth("small_shop", query.from_user.id)
+            update_usage = True
             self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         #self.player.next_turn()
-        self.render.render(self.player.progress)
-        self.render.save_pic(self.user.id)
-        self.player_view.send_pic(Update,CallbackContext)
+        self.render.render(self.player.progress, query.from_user.id)
+        self.render.save_pic(query.from_user.id)
+        if update_usage:
+            self.player_view.send_pic(Update,CallbackContext, query.from_user.id)
         #REQUEST = f"""var_1 = {...},var_2 = {...}"""
         get_request = f"""updated={int(datetime.now().timestamp())},pos_x = {self.player.player_pos_x},pos_y = {self.player.player_pos_y}"""
         self.db.update("user_info",get_request,self.user.id)

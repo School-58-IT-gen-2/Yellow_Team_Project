@@ -2,7 +2,7 @@ from Controller.Data_loader import Data
 from View import render
 from PIL import Image
 from database_adapter import *
-
+import json
 class Game():
     def __init__(self, user_id,db,player):
         self.player = player
@@ -15,6 +15,13 @@ class Game():
     def create_house(self, name, position):
         _building = self.building_data["buildings"][name]
         #_map = self.user_data["map_data"]
+
+
+
+        with open("resources.json", encoding="utf-8") as f:
+            house_res = json.load(f)
+
+
 
         map_posing = []
         for i in range(_building["size"]):

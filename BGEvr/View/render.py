@@ -8,8 +8,9 @@ class Render:
         self.db = db
         self.user_id = user_id
 
-    def render(self, data):
-        self.user_data = self.db.select_by_user_id("user_info", self.user_id)[0]
+    def render(self, data, user_id):
+
+        self.user_data = self.db.select_by_user_id("user_info", user_id)[0]
         self._map = Image.new(mode="RGBA", size=(1080, 1350), color=(0,0,0))
 
         _map_size = 8 #data["map_size"]

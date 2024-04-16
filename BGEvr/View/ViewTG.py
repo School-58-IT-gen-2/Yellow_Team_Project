@@ -10,8 +10,9 @@ class ViewTG():
         self.message = None
         self.file_size = None
         self._first_pic = True
-    def send_pic(self,update:Update,callback:CallbackContext):
+    def send_pic(self,update:Update,callback:CallbackContext, user_id):
         bot = Bot(self.bot_id)
+        self.user_id = user_id
         try:
             if self._first_pic:
                 self.message = bot.send_photo(self.user_id,photo=open(f'players_images/{self.user_id}.png','rb'))

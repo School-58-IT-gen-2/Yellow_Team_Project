@@ -1,0 +1,16 @@
+{
+  "small_house": {
+    "build": {
+      "wood": 10,
+      "iron": 0,
+      "money": 10,
+      "units": 0
+    },
+    "step": {
+      "wood": 10,
+      "iron": 0,
+      "money": 10
+    }
+
+  }
+}
