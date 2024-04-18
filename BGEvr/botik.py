@@ -15,6 +15,7 @@ load_dotenv()
 
 class RunGameBot:
     def __init__(self):
+        self.help_text = "Итак, вы попали в незабываемый и удивительный мир строительства - Industrio!\nВ ней вы можете ходить красным курсором, который представляет вашу беезграничную силу, нажимая на стрелочки.\nТак же вы можете строить и улучшать дома построенные вами в вкладке 'строительство'\nНу и кнопка следующий ход - следующий ход, что сказать.\nЖелаем приятной игры, разработчики йеллоу тиме <3!"
         self.new_gamer = False
         self.txt = ''
         self.player_view =None
@@ -28,6 +29,7 @@ class RunGameBot:
         self.render = Render
         self.used_keyboard = []
         self.main_keyboard = [
+            [InlineKeyboardButton("хелп ми плз", callback_data='help')],
             [InlineKeyboardButton("статистика", callback_data='info')],
             [InlineKeyboardButton("построить", callback_data='build')],
             [InlineKeyboardButton("🔼", callback_data='u')],
@@ -79,6 +81,8 @@ class RunGameBot:
         player = Player(query.from_user.id, self.db)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
+        if query.data == 'help':
+            self.txt += self.help_text
         if query.data == 'next_move':
             player.next_turn(query.from_user.id)
             update_usage = True
@@ -120,6 +124,6 @@ class RunGameBot:
         #REQUEST = f"""var_1 = {...},var_2 = {...}"""
         get_request = f"""updated={int(datetime.now().timestamp())}"""
         self.db.update("user_info",get_request,self.user.id)
-        if query.message.text != "Чё делать будешь?":
-            update.callback_query.message.edit_text(f"Чё делать будешь? \n {self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
+        #if query.message.text != "Чё делать будешь?":
+        update.callback_query.message.edit_text(f"Чё делать будешь? \n{self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
