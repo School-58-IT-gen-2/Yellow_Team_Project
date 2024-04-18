@@ -1,10 +1,7 @@
 version: '3.8'
 services:
   tgbot:
-    build: 
-      context: .
-      dockerfile: Dockerfile
-    container_name: bgevr_tgbot
+    image: bgevr_tgbot
     volumes:
       - user_saves:/BGEvr/saves
 
