@@ -45,7 +45,7 @@ class Game():
                     t.append(str(_house_id[0]))
                     str_of_houses = f"'{",".join(t)}'"
                 building_request = f"""house_id = {str_of_houses},money={self.player.player_money}"""
-                self.db.update("user_info",building_request,self.user_id)
+                self.db.update_by_user_id("user_info",building_request,self.user_id)
             #print(_building["position"], "building complete pos")
             #print(_building["position"], "Ready Pos\n\n")
             #print(self.user_data["houses_data"])

@@ -51,7 +51,7 @@ class Player:
             player_pos_y -= 1
         progress = {"x" : player_pos_x,"y" : player_pos_y}
         move_request = f"""pos_x = {player_pos_x},pos_y = {player_pos_y}"""
-        db.update("user_info",move_request,user_id)
+        db.update_by_user_id("user_info",move_request,user_id)
         print(f"POSLE : x {player_pos_x} y {player_pos_y}")
         
     
@@ -83,7 +83,7 @@ class Player:
             self.player_units += houses_data[house][1]
 
         req = f"""money = {self.player_money},units = {self.player_units}"""
-        self.db.update("user_info", req, id=user_id)
+        self.db.update_by_user_id("user_info", req, id=user_id)
 
     
     def build_smth(self,buiding, user_id):

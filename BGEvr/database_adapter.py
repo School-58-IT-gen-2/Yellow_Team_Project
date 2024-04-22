@@ -43,6 +43,17 @@ class Adapter():
         data = self.cursor.fetchall()
         return data
         # ()
+
+    def select_by_res_id(self, table,user_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE res_id = {user_id}"""
+        self.cursor.execute(request)
+        data = self.cursor.fetchall()
+        return data
+    def select_by_house_id(self, table,user_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE user_id = {user_id}"""
+        self.cursor.execute(request)
+        data = self.cursor.fetchall()
+        return data
     
 
     def select_by_house_id(self, table,house_id):
@@ -51,8 +62,18 @@ class Adapter():
         data = self.cursor.fetchall()
         return data
     
-    def update(self, table, request, id):
+    def update_by_user_id(self, table, request, id):
         request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE user_id={id}"""
+        print(request_update)
+        self.cursor.execute(request_update)
+        self.conn.commit()
+    def update_by_house_id(self, table, request, id):
+        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE house_id={id}"""
+        print(request_update)
+        self.cursor.execute(request_update)
+        self.conn.commit()
+    def update_by_res_id(self, table, request, id):
+        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE res_id={id}"""
         print(request_update)
         self.cursor.execute(request_update)
         self.conn.commit()
@@ -84,6 +105,11 @@ class Adapter():
         request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE user_id = {id}"""
         self.cursor.execute(request_delete)
         self.conn.commit()
+
+    def delete_all(self,table):
+        request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE 1=1"""
+        self.cursor.execute(request_delete)
+        self.conn.commit()
     # list_id = ['dimon'...]
     def delete_batch(self,table,list_id):
         for i in list_id:
@@ -93,26 +119,8 @@ class Adapter():
         self.conn.commit()
 
 
-    def task_1(self):
-        req = """SELECT * FROM "Galactic Empire"."Cruisers" as cr WHERE cr."Captain" SIMILAR TO '(L)%' and cr."Crew" < 200;"""
-        self.cursor.execute(req)
-        data = self.cursor.fetchall()
-        return data
-
-    def task_2(self):
-        req = """SELECT pt."Name", pt."id", COUNT(pl."Type") FROM "Galactic Empire"."Planet Types" pt LEFT JOIN "Galactic Empire"."Planets" pl ON pl."Type" = pt.id GROUP BY pt."id" ORDER BY COUNT(pl."Type") DESC;"""
-        self.cursor.execute(req)
-        data = self.cursor.fetchall()
-        return data
-
-    def task_3(self):
-        return "не получилося :_("
-
-
 #db.insert_batch("houses",data = {...})
-db = Adapter(schema_name="Galactic Empire",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
 db.connect()
-print(db.task_1())
-print("\n\n\n")
-print(db.task_2())
 
+db.delete_all("user_info")
