@@ -40,10 +40,11 @@ class RunGameBot:
             #[InlineKeyboardButton("ЭТО МОДИФИКАЦИ АААААААААААААААААААА",callback_data='mod')]
         ]
         self.build_keyboard = [
-            [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house_lvl_1')],
+            [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house')],
             [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
             [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
-            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')],
+            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')]
+            [InlineKeyboardButton("удалить выбранное строение - 5 кириешек", callback_data='delete')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
 
@@ -109,7 +110,7 @@ class RunGameBot:
             player.build_smth("small_factory", query.from_user.id)
             update_usage = True
             self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
-        if query.data == 'house_lvl_1':
+        if query.data == 'house':
             player.build_smth("small_house", query.from_user.id)
             update_usage = True
             self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
@@ -126,5 +127,5 @@ class RunGameBot:
         get_request = f"""updated={int(datetime.now().timestamp())}"""
         self.db.update_by_user_id("user_info",get_request,self.user.id)
         #if query.message.text != "Чё делать будешь?":
-        update.callback_query.message.edit_text(f"Чё делать будешь? \n{self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
+        update.callback_query.message.edit_text(f"Чё делать будешь?\n{self.txt}",reply_markup=InlineKeyboardMarkup(self.used_keyboard))
         self.txt = ''
