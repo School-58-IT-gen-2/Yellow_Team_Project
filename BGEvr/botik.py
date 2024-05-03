@@ -30,7 +30,6 @@ class RunGameBot:
         self.used_keyboard = []
         self.main_keyboard = [
             [InlineKeyboardButton("хелп ми плз", callback_data='help')],
-            [InlineKeyboardButton("статистика", callback_data='info')],
             [InlineKeyboardButton("построить", callback_data='build')],
             [InlineKeyboardButton("🔼", callback_data='u')],
             [InlineKeyboardButton("◀️",callback_data="l"),
@@ -43,7 +42,7 @@ class RunGameBot:
             [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house')],
             [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
             [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
-            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')]
+            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')],
             [InlineKeyboardButton("удалить выбранное строение - 5 кириешек", callback_data='delete')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
@@ -92,8 +91,6 @@ class RunGameBot:
             self.used_keyboard = self.build_keyboard
         if query.data == 'main_page':
             self.used_keyboard = self.main_keyboard
-        if query.data == 'info':
-            self.txt += self.player.player_info(query.from_user.id)
         if query.data == 'u':
             player.player_move("u", query.from_user.id)
             update_usage = True

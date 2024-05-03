@@ -1,5 +1,4 @@
 import psycopg2
-import random
 class Adapter():
 
     def __init__(self, host, port, sslmode, dbname,schema_name, user, password, target_session_attrs):
@@ -123,32 +122,4 @@ class Adapter():
 #db.insert_batch("houses",data = {...})
 db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
 db.connect()
-
-class GetRes:
-    def __init__(self,user_id,db):
-        self.user_id = user_id
-        self.db = db
-        self.res_count = random.randint(3,5)
-        self.res_list = ["tree","coal","copper"]
-    def get_data(self):
-        return dict([("res_type",self.res_list[random.randint(0,2)]),("volume",100),("pos_x",random.randint(0,7)),("pos_y",random.randint(0,7))])
-    def generate_res(self):
-        all_data = []
-        for i in range(self.res_count):
-            data = self.get_data()
-            all_data.append(data)
-        user_resources = self.db.insert_batch(table="resources",data=all_data,id_name="id")
-        print(user_resources)
-
-
-
-db.delete_all("resources")
-r = GetRes(user_id=5064226866,db=db)
-r.generate_res()
-    
-
-
-
-
-
 
