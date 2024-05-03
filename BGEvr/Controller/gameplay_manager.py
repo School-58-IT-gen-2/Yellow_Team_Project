@@ -84,3 +84,53 @@ class Game():
 
 
 
+
+    def delete_house(self,player_x,player_y):
+        user_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
+        if user_houses == 'no_buildings':
+            return 
+        user_houses = list(map(int,user_houses.split(',')))
+        print(user_houses)
+        for i in range(len(user_houses)):
+            t = self.db.select_by_house_id("houses",user_houses[i])
+            if t != []:
+                print(t)
+                if t[0][1] == player_x and t[0][2] == player_y:
+                    self.db.delete_by_house_id("houses",t[0][4])
+                k = f'{",".join(list(map(str,user_houses))).replace(str(user_houses[i]),'')}'
+                print(k) # баги в этой штуке, появляется запятая дибильная >:(
+                if k[0] == ',':
+                    t = list(k)
+                    t[0] = ''
+                    k = ",".join(t)
+                if k[-1] == ',':
+                    t = list(k)
+                    t[-1] = ''
+                    k = ",".join(t)
+                req = f"""house_id = {k}"""
+                if req != "house_id = ''":
+                    self.db.update_by_user_id("user_info",req,self.user_id)
+                else:
+                    self.db.update_by_user_id("user_info","""house_id = 'no_buildings'""",self.user_id)
+            else:
+                k = f'{",".join(list(map(str,user_houses))).replace(str(user_houses[i]),'')}'
+                print(k)
+                if k[0] == ',':
+                    t = list(k)
+                    t[0] = ''
+                    k = ",".join(t)
+                if k[-1] == ',':
+                    t = list(k)
+                    t[-1] = ''
+                    k = ",".join(t)
+                req = f"""house_id = {k}"""
+                if req != "house_id = ''":
+                    self.db.update_by_user_id("user_info",req,self.user_id)
+                else:
+                    self.db.update_by_user_id("user_info","""house_id = 'no_buildings'""",self.user_id)
+
+
+
+
+
+

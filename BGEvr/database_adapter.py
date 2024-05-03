@@ -44,18 +44,12 @@ class Adapter():
         return data
         # ()
 
-    def select_by_res_id(self, table,user_id):
-        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE res_id = {user_id}"""
-        self.cursor.execute(request)
-        data = self.cursor.fetchall()
-        return data
-    def select_by_house_id(self, table,user_id):
-        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE user_id = {user_id}"""
+    def select_by_res_id(self, table,res_id):
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE res_id = {res_id}"""
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data
     
-
     def select_by_house_id(self, table,house_id):
         request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE id = {house_id}"""
         self.cursor.execute(request)
@@ -101,8 +95,13 @@ class Adapter():
         return t
 
 
-    def delete(self,table,id):
+    def delete_by_user_id(self,table,id):
         request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE user_id = {id}"""
+        self.cursor.execute(request_delete)
+        self.conn.commit()
+
+    def delete_by_house_id(self,table,id):
+        request_delete = f"""DELETE FROM "{self.schema_name}"."{table}" WHERE id = {id}"""
         self.cursor.execute(request_delete)
         self.conn.commit()
 
@@ -124,4 +123,5 @@ class Adapter():
 db.connect()
 db.delete_all("user_info")
 db.delete_all("resources")
-"""
+db.delete_all("houses")
+print("succesfully delete all data :)")"""

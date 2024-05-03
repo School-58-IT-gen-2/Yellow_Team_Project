@@ -13,6 +13,7 @@ class Player:
         self.player_pos_y = self.db.select_by_user_id("user_info",self.user_id)[0][1]
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
+        self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][13]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
         t = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         self.pay_for_turn = len(t.split(","))
@@ -93,3 +94,11 @@ class Player:
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших жителей, Милорд - {self.player_units}"
+    
+
+
+    def delete_house(self):
+        self.game.delete_house(self.player_pos_x,self.player_pos_y)
+        self.player_money -= 15
+        req = f"""money = {self.player_money}"""
+        self.db.update_by_user_id("user_info",req,self.user_id)

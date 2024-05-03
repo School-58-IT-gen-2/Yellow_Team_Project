@@ -44,7 +44,7 @@ class RunGameBot:
             [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
             [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
             [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')],
-            [InlineKeyboardButton("удалить выбранное строение - 5 кириешек", callback_data='delete')],
+            [InlineKeyboardButton("удалить выбранное строение - 15 кириешек", callback_data='delete')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
 
@@ -84,6 +84,9 @@ class RunGameBot:
         player = Player(query.from_user.id, self.db)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
+        if query.data == 'delete':
+            self.player.delete_house()
+            update_usage = True
         if query.data == 'help':
             self.txt += self.help_text
         if query.data == 'next_move':
