@@ -28,6 +28,10 @@ class Render:
         self.render_houses_by_user_data()
         self.render_res()
         self._map.paste(_selected, (self.user_data[1]* self._one_point_size, self.user_data[0]*self._one_point_size), mask=_selected)
+        draw = ImageDraw.Draw(self._map)
+        font = ImageFont.truetype("res/pixel_font.otf", size=35)
+        draw.text((50, 1125), f"Кириешки: {self.user_data[8]}", font=font)
+        draw.text((50, 1200), f"Жители: {self.user_data[2]}", font=font)
         return self._map
     def save_pic(self,user_id):
         self._map.save(f"./players_images/{user_id}.png")
@@ -53,10 +57,7 @@ class Render:
                     _house = Image.open(f"./res/{build_type}.png").convert(mode="RGBA").resize((self._one_point_size,self._one_point_size))
                     _cycle_ground.paste(_house,(0,0),_house)
                     self._map.paste(_cycle_ground, (_pos_x * self._one_point_size, _pos_y * self._one_point_size))
-        draw = ImageDraw.Draw(self._map)
-        font = ImageFont.truetype("res/pixel_font.otf", size=35)
-        draw.text((50, 1125), f"Кириешки: {self.user_data[8]}", font=font)
-        draw.text((50, 1200), f"Жители: {self.user_data[2]}", font=font)
+        
 
 
     def render_res(self):
