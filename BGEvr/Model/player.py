@@ -86,9 +86,11 @@ class Player:
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
         if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
-            pass
+            self.player_level += 1
+        elif self.player_units >= 10000:
+            self.player_level += 1
         #etc
-        req = f"""money = {self.player_money},units = {self.player_units}"""
+        req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level}"""
         self.db.update_by_user_id("user_info", req, id=user_id)
 
     

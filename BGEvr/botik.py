@@ -63,7 +63,7 @@ class RunGameBot:
         
         if _res == 0:
             user_res = self.generator_res.generate_res()
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": 0,"res_id" : user_res}],id_name='user_id')
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": 0,"res_id" : user_res,"player_level" : 1}],id_name='user_id')
         self.data_loader = Data(self.user.id)
         self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
