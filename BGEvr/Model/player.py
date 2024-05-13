@@ -14,6 +14,9 @@ class Player:
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][13]
+        self.player_coal_speed = 0
+        self.player_copper_speed = 0 # 5 T/мин
+        self.player_level = 1
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
         t = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         self.pay_for_turn = len(t.split(","))
@@ -26,7 +29,7 @@ class Player:
         db.connect()
         player_pos_x = db.select_by_user_id("user_info", user_id)[0][0]
         player_pos_y = db.select_by_user_id("user_info", user_id)[0][1]
-        print(f"DO : x {player_pos_x} y {player_pos_y}")
+        #print(f"DO : x {player_pos_x} y {player_pos_y}")
         progress = {"x": player_pos_x, "y": player_pos_y}
 
         #print(len(self.progress["map_data"][0]))
@@ -53,7 +56,7 @@ class Player:
         progress = {"x" : player_pos_x,"y" : player_pos_y}
         move_request = f"""pos_x = {player_pos_x},pos_y = {player_pos_y}"""
         db.update_by_user_id("user_info",move_request,user_id)
-        print(f"POSLE : x {player_pos_x} y {player_pos_y}")
+        #print(f"POSLE : x {player_pos_x} y {player_pos_y}")
         
     
     def next_turn(self, user_id):
@@ -82,7 +85,9 @@ class Player:
             print(house)
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
-
+        if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
+            pass
+        #etc
         req = f"""money = {self.player_money},units = {self.player_units}"""
         self.db.update_by_user_id("user_info", req, id=user_id)
 

@@ -29,15 +29,18 @@ class RunGameBot:
         self.db.connect()
         self.render = Render
         self.used_keyboard = []
-        self.main_keyboard = [
+        self.setting_keyboard = [
             [InlineKeyboardButton("хелп ми плз", callback_data='help')],
+            [InlineKeyboardButton("новая игра", callback_data='new_game')],
+            [InlineKeyboardButton("назад", callback_data='main_page')]]
+        self.main_keyboard = [
+            [InlineKeyboardButton("настройки", callback_data='settings')],
             [InlineKeyboardButton("построить", callback_data='build')],
             [InlineKeyboardButton("🔼", callback_data='u')],
             [InlineKeyboardButton("◀️",callback_data="l"),
              InlineKeyboardButton("▶️",callback_data="r")],
             [InlineKeyboardButton("🔽", callback_data='d')],
-            [InlineKeyboardButton("следующий ход",callback_data="next_move")],
-            #[InlineKeyboardButton("ЭТО МОДИФИКАЦИ АААААААААААААААААААА",callback_data='mod')]
+            [InlineKeyboardButton("следующий ход",callback_data="next_move")]
         ]
         self.build_keyboard = [
             [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house')],
@@ -84,6 +87,10 @@ class RunGameBot:
         player = Player(query.from_user.id, self.db)
         #if query.data == 'mod':
         #    self.txt += ",".join(self.dataloader.load_player_id())
+        if query.data == 'settings':
+            self.used_keyboard = self.setting_keyboard
+        if query.data == 'new_game':
+            pass
         if query.data == 'delete':
             self.player.delete_house()
             update_usage = True
@@ -111,15 +118,15 @@ class RunGameBot:
         if query.data == 'factory':
             player.build_smth("small_factory", query.from_user.id)
             update_usage = True
-            self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
+            #self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'house':
             player.build_smth("small_house", query.from_user.id)
             update_usage = True
-            self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
+            #self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            player.build_smth("small_shop", query.from_user.id)
+            player.build_smth("bank", query.from_user.id)
             update_usage = True
-            self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
+            #self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         #self.player.next_turn()
         self.render.render(self.player.progress, query.from_user.id)
         self.render.save_pic(query.from_user.id)
