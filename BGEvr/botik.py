@@ -129,9 +129,9 @@ class RunGameBot:
             update_usage = True
             #self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            player.build_smth("bank", query.from_user.id)
-            update_usage = True
-            #self.txt += f'Вы протратили достаточно кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
+            #player.build_smth("bank", query.from_user.id)
+            #update_usage = True
+            self.txt += "А фигушки, механика пока не работает :("
         #self.player.next_turn()
         self.render.render(self.player.progress, query.from_user.id)
         self.render.save_pic(query.from_user.id)
