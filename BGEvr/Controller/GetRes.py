@@ -22,7 +22,15 @@ class GetRes:
             user_resources.append(self.db.insert_batch(table="resources",data=[all_data[i]],id_name="id")[0][0])
         self.all_user_res = ",".join(list(map(str,user_resources)))
         return f"""{self.all_user_res}"""
-
+    def generate_res_by_turn(self,cnt):
+        all_data = []
+        user_resources = []
+        for i in range(cnt):
+            data = self.get_data()
+            all_data.append(data)
+            user_resources.append(self.db.insert_batch(table="resources",data=[all_data[i]],id_name="id")[0][0])
+        self.all_user_res = ",".join(list(map(str,user_resources)))
+        return f"""{self.all_user_res}"""
     def update(self):
         req = f"""res_id = '{self.all_user_res}'"""
         self.db.update_by_user_id("user_info",req,id=self.user_id)
