@@ -31,7 +31,7 @@ class Game():
         if self.check_can_build():
             _building["position"] = map_posing[0]
             self.build_price = _building["price"]
-            if self.player.player_money > self.build_price:
+            if self.player.player_money >= self.build_price:
                 self.player.player_money -= self.build_price
 
                 #self.user_data["map_data"] = _map
