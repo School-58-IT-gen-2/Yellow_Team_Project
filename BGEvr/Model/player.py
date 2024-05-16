@@ -19,7 +19,7 @@ class Player:
         self.player_coal_speed = 0
         self.player_copper_speed = 0 # 5 T/мин
         self.player_level = 1
-        self.turn_counter = 0 # для генерации ресов
+        self.turn_counter = self.db.select_by_user_id("user_info",self.user_id)[0][15]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
         t = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         self.pay_for_turn = len(t.split(","))
@@ -63,7 +63,7 @@ class Player:
         
     
     def next_turn(self, user_id):
-        #self.turn_counter += 1
+        self.turn_counter += 1
         houses_data = {
             "small_house": [0, 10],
             "small_factory": [10, 0]
@@ -81,14 +81,17 @@ class Player:
 
         user_houses = self.db.select_by_user_id("user_info", user_id)[0][3]
         
-        
-        t = self.gr.generate_res_by_turn(1)
-        q = self.db.select_by_user_id("user_info",self.user_id)[0][13] + ',' + t
-        req = f"""res_id = '{q}'"""
-        print(t)
-        print(q)
-        print(req)
-        self.db.update_by_user_id("user_info", req, id=user_id)
+        if self.turn_counter == 4:
+            t = self.gr.generate_res_by_turn(1)
+            q = self.db.select_by_user_id("user_info",user_id)[0][13] + ',' + t
+            self.turn_counter = 0
+            req = f"""res_id = '{q}',turn_counter = {self.turn_counter}"""
+            #print(t)
+            #print(q)
+            #print(req)
+            self.db.update_by_user_id("user_info", req, id=user_id)
+
+        self.db.update_by_user_id("user_info",f"""turn_counter = {self.turn_counter}""",user_id)
 
         if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
             self.player_level += 1
