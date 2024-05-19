@@ -62,7 +62,7 @@ class Adapter():
         self.cursor.execute(request_update)
         self.conn.commit()
     def update_by_house_id(self, table, request, id):
-        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE house_id={id}"""
+        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE id={id}"""
         print(request_update)
         self.cursor.execute(request_update)
         self.conn.commit()

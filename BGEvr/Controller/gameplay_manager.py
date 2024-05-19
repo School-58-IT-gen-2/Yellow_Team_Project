@@ -129,8 +129,22 @@ class Game():
                 else:
                     self.db.update_by_user_id("user_info","""house_id = 'no_buildings'""",self.user_id)
 
-
-
+    def upgrade_house(self,player_x,player_y):
+        user_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
+        if user_houses == 'no_buildings':
+            return 
+        user_houses = list(map(int,user_houses.split(',')))
+        print(user_houses)
+        for i in range(len(user_houses)):
+            t = self.db.select_by_house_id("houses",user_houses[i])
+            if t != []:
+                print(t)
+                if t[0][1] == player_x and t[0][2] == player_y:
+                    new_level = t[0][3] + 1
+                    print(t[0][3],'  ',new_level)
+                    req = f"""house_level = {new_level}"""
+                    self.db.update_by_house_id("houses",req,t[0][4])
+                    break
 
 
 

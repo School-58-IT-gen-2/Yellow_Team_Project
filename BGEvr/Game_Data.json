@@ -15,6 +15,36 @@
         "units_adder": "100type%"
       }
     },
+    "middle_house": {
+      "stage" : 0,
+      "price" : 50,
+      "type": "middle_house",
+      "size": 2,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "house.png",
+      "max_level": 5,
+      "on_upgrade": {
+        "units_adder": "100type%"
+      }
+    },
+    "big_house": {
+      "stage" : 0,
+      "price" : 10,
+      "type": "small_house",
+      "size": 2,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "house.png",
+      "max_level": 5,
+      "on_upgrade": {
+        "units_adder": "100type%"
+      }
+    },
     "small_factory": {
       "stage" : 0,
       "price" : 20,
@@ -34,16 +64,54 @@
         "wood_generation": "100type%"
       }
     },
-    "bank": {
+    "middle_factory": {
       "stage" : 0,
-      "price" : 15,
-      "type": "bank",
+      "price" : 50,
+      "type": "middle_factory",
       "size": 1,
       "units_adder": 1,
       "position": null,
       "can_delete": true,
       "level": 1,
-      "texture": "bank.png",
+      "texture": "middle_factory.png",
+      "max_level": 5,
+      "modify": {
+        "wood_generation": 1
+      },
+      "on_upgrade": {
+        "units_adder": "100type%",
+        "wood_generation": "100type%"
+      }
+    },
+    "big_factory": {
+      "stage" : 0,
+      "price" : 100,
+      "type": "big_factory",
+      "size": 1,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "big_factory.png",
+      "max_level": 5,
+      "modify": {
+        "wood_generation": 1
+      },
+      "on_upgrade": {
+        "units_adder": "100type%",
+        "wood_generation": "100type%"
+      }
+    },
+    "small_bank": {
+      "stage" : 0,
+      "price" : 15,
+      "type": "small_bank",
+      "size": 1,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "small_bank.png",
       "max_level": 2,
       "modify": {
         "selling_cost": 1,
@@ -54,6 +122,37 @@
       "on_upgrade": {
         "units_adder": "100type%"
       },
+      
+
+      "on_level": {
+        "level": 2,
+        "items_types": [
+          "wood",
+          "iron"
+        ]
+    }
+    },
+    "big_bank": {
+      "stage" : 0,
+      "price" : 150,
+      "type": "big_bank",
+      "size": 1,
+      "units_adder": 1,
+      "position": null,
+      "can_delete": true,
+      "level": 1,
+      "texture": "big_bank.png",
+      "max_level": 2,
+      "modify": {
+        "selling_cost": 1,
+        "items_types": [
+          "wood"
+        ]
+      },
+      "on_upgrade": {
+        "units_adder": "100type%"
+      },
+      
 
       "on_level": {
         "level": 2,

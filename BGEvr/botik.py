@@ -46,7 +46,7 @@ class RunGameBot:
             [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house')],
             [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
             [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
-            [InlineKeyboardButton("улучшить выбранное строение - 20 кириешек", callback_data='upgrade')],
+            [InlineKeyboardButton("улучшить выбранное строение - 40 кириешек", callback_data='upgrade')],
             [InlineKeyboardButton("удалить выбранное строение - 15 кириешек", callback_data='delete')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
@@ -132,6 +132,10 @@ class RunGameBot:
             #player.build_smth("bank", query.from_user.id)
             #update_usage = True
             self.txt += "А фигушки, механика пока не работает :("
+
+        if query.data == 'upgrade':
+            self.player.update_house()
+            update_usage = True
         #self.player.next_turn()
         self.render.render(self.player.progress, query.from_user.id)
         self.render.save_pic(query.from_user.id)

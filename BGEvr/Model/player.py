@@ -127,3 +127,10 @@ class Player:
         self.player_money -= 15
         req = f"""money = {self.player_money}"""
         self.db.update_by_user_id("user_info",req,self.user_id)
+
+
+    def update_house(self):
+        self.game.upgrade_house(self.player_pos_x,self.player_pos_y)
+        self.player_money -= 40
+        req = f"""money = {self.player_money}"""
+        self.db.update_by_user_id("user_info",req,self.user_id)

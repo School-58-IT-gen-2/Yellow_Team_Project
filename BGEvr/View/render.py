@@ -1,5 +1,5 @@
 from PIL import Image, ImageColor, ImageDraw, ImageFont
-
+import os
 import random
 class Render:
     def __init__(self,db,user_id):
@@ -47,14 +47,17 @@ class Render:
             return 
         user_houses = list(map(int,user_houses.split(',')))
         all_houses = self.db.select("houses")
+        all_buildings = {"house":['small','middle','big'],"factory":['small','middle','big'],"bank":["small","big"]}
         for i in all_houses:
             for j in user_houses:
                 if j == i[-1]:
                     _pos_x = i[2]
                     _pos_y = i[1]
-                    build_type = i[0]
+                    build_type = i[0].split("_")[1]
+                    _build = i[4]
+                    build_level = all_buildings[build_type][i[3]-1]
                     _cycle_ground = Image.open(f"./res/{_ground[random.randint(0, 3)]}").convert(mode="RGBA").resize((self._one_point_size, self._one_point_size))
-                    _house = Image.open(f"./res/{build_type}.png").convert(mode="RGBA").resize((self._one_point_size,self._one_point_size))
+                    _house = Image.open(f"./res/{build_level+'_'+build_type}.png").convert(mode="RGBA").resize((self._one_point_size,self._one_point_size))
                     _cycle_ground.paste(_house,(0,0),_house)
                     self._map.paste(_cycle_ground, (_pos_x * self._one_point_size, _pos_y * self._one_point_size))
         
