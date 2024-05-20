@@ -53,7 +53,7 @@ class Render:
                 if j == i[-1]:
                     _pos_x = i[2]
                     _pos_y = i[1]
-                    build_type = i[0].split("_")[1]
+                    build_type = i[0]
                     _build = i[4]
                     build_level = all_buildings[build_type][i[3]-1]
                     _cycle_ground = Image.open(f"./res/{_ground[random.randint(0, 3)]}").convert(mode="RGBA").resize((self._one_point_size, self._one_point_size))

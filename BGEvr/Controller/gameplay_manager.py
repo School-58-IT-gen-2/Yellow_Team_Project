@@ -36,7 +36,7 @@ class Game():
 
                 #self.user_data["map_data"] = _map
                 #self.user_data["houses_data"].append(_building)
-                _house_id = self.db.insert_batch("houses",[{"type" : _building["type"],"pos_x" : self.player.player_pos_x,"pos_y" : self.player.player_pos_y,"house_level" : 1}],id_name = 'id')[0]
+                _house_id = self.db.insert_batch("houses",[{"type" : _building["type"].split("_")[1],"pos_x" : self.player.player_pos_x,"pos_y" : self.player.player_pos_y,"house_level" : 1}],id_name = 'id')[0]
                 str_of_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
                 if str_of_houses == 'no_buildings':
                     str_of_houses = str(_house_id[0]) 
@@ -62,11 +62,19 @@ class Game():
         if _houses_id == 'no_buildings':
             return True
         _houses_id = list(map(int,_houses_id.split(',')))
+        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][13].split(',')))
         player_pos_x = self.db.select_by_user_id("user_info",self.user_id)[0][0]
         player_pos_y = self.db.select_by_user_id("user_info",self.user_id)[0][1]
         houses_data = self.db.select("houses")
+        res_data = self.db.select("resources")
         for i in houses_data:
             for j in _houses_id:
+                if j in i:
+                    if player_pos_x == i[1] and player_pos_y == i[2]:
+                        _res = False
+                        break
+        for i in res_data:
+            for j in _res_id:
                 if j in i:
                     if player_pos_x == i[1] and player_pos_y == i[2]:
                         _res = False
@@ -85,12 +93,12 @@ class Game():
 
 
 
-    def delete_house(self,player_x,player_y):
+    """def delete_house(self,player_x,player_y):
         user_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         if user_houses == 'no_buildings':
             return 
         user_houses = list(map(int,user_houses.split(',')))
-        print(user_houses)
+        #print(user_houses)
         for i in range(len(user_houses)):
             t = self.db.select_by_house_id("houses",user_houses[i])
             if t != []:
@@ -107,11 +115,11 @@ class Game():
                     t = list(k)
                     t[-1] = ''
                     k = ",".join(t)
-                req = f"""house_id = {k}"""
+                req = f""house_id = {k}""
                 if req != "house_id = ''":
                     self.db.update_by_user_id("user_info",req,self.user_id)
                 else:
-                    self.db.update_by_user_id("user_info","""house_id = 'no_buildings'""",self.user_id)
+                    self.db.update_by_user_id("user_info",""house_id = 'no_buildings'"",self.user_id)
             else:
                 k = f'{",".join(list(map(str,user_houses))).replace(str(user_houses[i]),'')}'
                 print(k)
@@ -123,28 +131,32 @@ class Game():
                     t = list(k)
                     t[-1] = ''
                     k = ",".join(t)
-                req = f"""house_id = {k}"""
+                req = f""house_id = {k}""
                 if req != "house_id = ''":
                     self.db.update_by_user_id("user_info",req,self.user_id)
                 else:
-                    self.db.update_by_user_id("user_info","""house_id = 'no_buildings'""",self.user_id)
-
+                    self.db.update_by_user_id("user_info",""house_id = 'no_buildings'"",self.user_id)"""
     def upgrade_house(self,player_x,player_y):
         user_houses = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         if user_houses == 'no_buildings':
             return 
         user_houses = list(map(int,user_houses.split(',')))
-        print(user_houses)
+        #print(user_houses)
         for i in range(len(user_houses)):
             t = self.db.select_by_house_id("houses",user_houses[i])
             if t != []:
                 print(t)
                 if t[0][1] == player_x and t[0][2] == player_y:
-                    new_level = t[0][3] + 1
-                    print(t[0][3],'  ',new_level)
+                    if t[0][3] >=3:
+                        return "больше нельзя строить - максимальный уровень"
+                    else:
+                        new_level = t[0][3] + 1
+                    #print(t[0][3],'  ',new_level)
                     req = f"""house_level = {new_level}"""
                     self.db.update_by_house_id("houses",req,t[0][4])
                     break
+
+        return f"Вы увеличили уровень данного сооружения на 1,\nтеперь его уровень - {new_level}"
 
 
 

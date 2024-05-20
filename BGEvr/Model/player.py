@@ -66,7 +66,11 @@ class Player:
         self.turn_counter += 1
         houses_data = {
             "small_house": [0, 10],
-            "small_factory": [10, 0]
+            "small_factory": [10, 0],
+            "middle_house": [0,25],
+            "middle_factory": [25,0],
+            "big_house": [0,50],
+            "big_factory": [50,0]
         }
 
         self.db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
@@ -104,8 +108,8 @@ class Player:
         user_houses = list(map(int, user_houses.split(',')))
 
         for i in user_houses:
-            house = self.db.select_by_house_id(table="houses", house_id=i)[0][0]
-            print(house)
+            _house = self.db.select_by_house_id(table="houses", house_id=i)[0][0]
+            house = ["small","middle","big"][self.db.select_by_house_id(table="houses", house_id=i)[0][3]-1] +"_"+ _house
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
         req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level}"""
@@ -122,15 +126,18 @@ class Player:
     
 
 
-    def delete_house(self):
+    """def delete_house(self):
         self.game.delete_house(self.player_pos_x,self.player_pos_y)
         self.player_money -= 15
-        req = f"""money = {self.player_money}"""
-        self.db.update_by_user_id("user_info",req,self.user_id)
+        req = f""money = {self.player_money}""
+        self.db.update_by_user_id("user_info",req,self.user_id)"""
 
 
     def update_house(self):
-        self.game.upgrade_house(self.player_pos_x,self.player_pos_y)
-        self.player_money -= 40
-        req = f"""money = {self.player_money}"""
-        self.db.update_by_user_id("user_info",req,self.user_id)
+        if self.player_money >= 100:
+            self.player_money -= 100
+            req = f"""money = {self.player_money}"""
+            self.db.update_by_user_id("user_info",req,self.user_id)
+            return self.game.upgrade_house(self.player_pos_x,self.player_pos_y)
+        else:
+            return "Нету денег :("

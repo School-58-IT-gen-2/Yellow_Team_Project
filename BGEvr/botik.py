@@ -46,8 +46,8 @@ class RunGameBot:
             [InlineKeyboardButton(f"домик - 10 кириешек", callback_data='house')],
             [InlineKeyboardButton("заводик - 20 кириешек", callback_data='factory')],
             [InlineKeyboardButton("банк - 15 кириешек", callback_data='bank')],
-            [InlineKeyboardButton("улучшить выбранное строение - 40 кириешек", callback_data='upgrade')],
-            [InlineKeyboardButton("удалить выбранное строение - 15 кириешек", callback_data='delete')],
+            [InlineKeyboardButton("улучшить выбранное строение - 100 кириешек", callback_data='upgrade')],
+            #[InlineKeyboardButton("удалить выбранное строение - 15 кириешек", callback_data='delete')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
 
@@ -95,9 +95,9 @@ class RunGameBot:
             user_res = self.generator_res.generate_res()
             self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": t,"res_id" : user_res,"player_level" : 1}],id_name='user_id')
             update_usage = True
-        if query.data == 'delete':
+        """if query.data == 'delete':
             self.player.delete_house()
-            update_usage = True
+            update_usage = True"""
         if query.data == 'help':
             self.txt += self.help_text
         if query.data == 'next_move':
@@ -129,12 +129,12 @@ class RunGameBot:
             update_usage = True
             #self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            #player.build_smth("bank", query.from_user.id)
-            #update_usage = True
-            self.txt += "А фигушки, механика пока не работает :("
+            player.build_smth("small_bank", query.from_user.id)
+            update_usage = True
+            #self.txt += "А фигушки, механика пока не работает :("
 
         if query.data == 'upgrade':
-            self.player.update_house()
+            self.txt+=self.player.update_house()
             update_usage = True
         #self.player.next_turn()
         self.render.render(self.player.progress, query.from_user.id)
