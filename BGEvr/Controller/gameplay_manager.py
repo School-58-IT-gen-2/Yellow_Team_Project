@@ -57,7 +57,8 @@ class Game():
 
 
     def check_can_build(self):
-        _res = True
+        _res_1 = True
+        _res_2 = True
         _houses_id = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         if _houses_id == 'no_buildings':
             return True
@@ -71,16 +72,16 @@ class Game():
             for j in _houses_id:
                 if j in i:
                     if player_pos_x == i[1] and player_pos_y == i[2]:
-                        _res = False
+                        _res_1 = False
                         break
         for i in res_data:
             for j in _res_id:
                 if j in i:
                     if player_pos_x == i[1] and player_pos_y == i[2]:
-                        _res = False
+                        _res_2 = False
                         break
 
-        return _res
+        return (_res_1 and _res_2)
 
     def show_map(self):
         self.render.render(self.user_data).show()

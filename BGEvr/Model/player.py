@@ -63,6 +63,7 @@ class Player:
         
     
     def next_turn(self, user_id):
+        self.user_id = user_id
         self.turn_counter += 1
         houses_data = {
             "small_house": [0, 10],
@@ -70,7 +71,9 @@ class Player:
             "middle_house": [0,25],
             "middle_factory": [25,0],
             "big_house": [0,50],
-            "big_factory": [50,0]
+            "big_factory": [50,0],
+            "small_bank": [0,0],
+            "middle_bank":[0,0]
         }
 
         self.db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
@@ -134,6 +137,7 @@ class Player:
 
 
     def update_house(self):
+        self.player_money = self.db.select_by_user_id("user_info", self.user_id)[0][8]
         if self.player_money >= 100:
             self.player_money -= 100
             req = f"""money = {self.player_money}"""
