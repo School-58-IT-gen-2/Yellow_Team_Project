@@ -63,7 +63,7 @@ class RunGameBot:
         
         if _res == 0:
             user_res = self.generator_res.generate_res()
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": 0,"res_id" : user_res,"player_level" : 1}],id_name='user_id')
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "last_img_id": 0,"res_id" : user_res,"player_level" : 1,"mining_speed" : 1}],id_name='user_id')
         self.data_loader = Data(self.user.id)
         self.render = Render(self.db,self.user.id)
         self.game_data = self.data_loader.load_game_data()
@@ -93,7 +93,7 @@ class RunGameBot:
             t = self.db.select_by_user_id("user_info",self.user.id)[0][12]
             self.db.delete_by_user_id("user_info",self.user.id)
             user_res = self.generator_res.generate_res()
-            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name, "wood": 10, "iron": 10, "last_img_id": t,"res_id" : user_res,"player_level" : 1}],id_name='user_id')
+            self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name,"last_img_id": t,"res_id" : user_res,"player_level" : 1,"mining_speed":1}],id_name='user_id')
             update_usage = True
         """if query.data == 'delete':
             self.player.delete_house()
@@ -121,15 +121,15 @@ class RunGameBot:
             player.player_move("d", query.from_user.id)
             update_usage = True
         if query.data == 'factory':
-            player.build_smth("small_factory", query.from_user.id)
+            self.txt += player.build_smth("small_factory", query.from_user.id)
             update_usage = True
             #self.txt += f'Вы протратили много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'house':
-            player.build_smth("small_house", query.from_user.id)
+            self.txt += player.build_smth("small_house", query.from_user.id)
             update_usage = True
             #self.txt += f'Вы протратили очень много кириешек,зайдите в статистику для того, чтобы узнать сколько у вас осталось'
         if query.data == 'bank':
-            player.build_smth("small_bank", query.from_user.id)
+            self.txt += player.build_smth("small_bank", query.from_user.id)
             update_usage = True
             #self.txt += "А фигушки, механика пока не работает :("
 

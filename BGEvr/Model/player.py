@@ -25,6 +25,9 @@ class Player:
         self.pay_for_turn = len(t.split(","))
         #print(self.pay_for_turn)
 
+    def convert_units_to_speed(units):
+        return int((units+4)/14.1014)
+
     def player_move(self,move, user_id):
         db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
                           port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
@@ -102,7 +105,7 @@ class Player:
 
         if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
             self.player_level += 1
-        elif self.player_units >= 10000:
+        elif self.player_units >= 700:
             self.player_level += 1
         #etc
 
@@ -115,12 +118,12 @@ class Player:
             house = ["small","middle","big"][self.db.select_by_house_id(table="houses", house_id=i)[0][3]-1] +"_"+ _house
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
-        req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level}"""
+        req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level},mining_speed={self.convert_units_to_speed(self.player_units)}"""
         self.db.update_by_user_id("user_info", req, id=user_id)
 
     
     def build_smth(self,buiding, user_id):
-        self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
+        return self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
 
     def player_info(self, user_id):
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]

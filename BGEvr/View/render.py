@@ -32,6 +32,10 @@ class Render:
         font = ImageFont.truetype("res/pixel_font.otf", size=35)
         draw.text((50, 1125), f"Кириешки: {self.user_data[8]}", font=font)
         draw.text((50, 1200), f"Жители: {self.user_data[2]}", font=font)
+        draw.text((50, 1275), f"Скорость добычи: {self.user_data[17]} Т./ход", font=font)
+        draw.text((740, 1125), f"Уголь: {self.user_data[11] } Т.", font=font)
+        draw.text((740, 1200), f"Дерево: {self.user_data[10] } Т.", font=font)
+        draw.text((740, 1275), f"Золото: {self.user_data[16] } Т.", font=font)
         return self._map
     def save_pic(self,user_id):
         self._map.save(f"./players_images/{user_id}.png")

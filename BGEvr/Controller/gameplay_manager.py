@@ -22,13 +22,14 @@ class Game():
             house_res = json.load(f)
 
 
-
+        _checked = self.check_can_build()
         map_posing = []
         for i in range(_building["size"]):
             _pos = [position[0]+i]
             _pos.append(position[1]+i)
             map_posing.append(_pos)
-        if self.check_can_build():
+        print(_checked)
+        if _checked:
             _building["position"] = map_posing[0]
             self.build_price = _building["price"]
             if self.player.player_money >= self.build_price:
@@ -51,9 +52,10 @@ class Game():
             #print(self.user_data["houses_data"])
             #self.data_loader.save_user_data()
             #print(self.user_data)
+            return "Вы успешно построили ваше сооружение. \nПоздравляем! XD"
 
         else:
-            print("Can't Create")
+            return "Вы не можете построить тут сооружение.\nЧто-то мешает :_("
 
 
     def check_can_build(self):
@@ -77,10 +79,10 @@ class Game():
         for i in res_data:
             for j in _res_id:
                 if j in i:
-                    if player_pos_x == i[1] and player_pos_y == i[2]:
+                    if player_pos_x == i[2] and player_pos_y == i[1]:
                         _res_2 = False
                         break
-
+        print(_res_1,'  ',_res_2)
         return (_res_1 and _res_2)
 
     def show_map(self):
