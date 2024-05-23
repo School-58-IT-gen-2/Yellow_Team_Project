@@ -163,3 +163,27 @@ class Game():
 
 
 
+
+    def mine_resources(self):
+        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][13].split(',')))
+        _mine_speed = self.db.select_by_user_id("user_info",self.user_id)[0][17]
+        _coal = self.db.select_by_user_id("user_info",self.user_id)[0][11]
+        _gold = self.db.select_by_user_id("user_info",self.user_id)[0][16]
+        _tree = self.db.select_by_user_id("user_info",self.user_id)[0][10]
+        for i in _res_id:
+            t = list(self.db.select_by_res_id("resources",i)[0])
+            print(t[3])
+            if t[4] == "gold":
+                _gold += _mine_speed
+                t[3] -= _mine_speed
+            if t[4] == "coal":
+                _coal += _mine_speed
+                t[3] -= _mine_speed
+            if t[4] == "tree":
+                _tree += _mine_speed
+                t[3] -= _mine_speed
+            req = f"""coal = {_coal},wood = {_tree},gold = {_gold}"""
+            self.db.update_by_user_id("user_info",req,self.user_id)
+            if t[3] <= 0:
+                self.db.delete_by_house_id("resources",i)
+

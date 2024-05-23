@@ -51,7 +51,7 @@ class Render:
             return 
         user_houses = list(map(int,user_houses.split(',')))
         all_houses = self.db.select("houses")
-        all_buildings = {"house":['small','middle','big'],"factory":['small','middle','big'],"bank":["small","big"]}
+        all_buildings = {"house":['small','middle','big'],"factory":['small','middle','big'],"bank":["small","middle"]}
         for i in all_houses:
             for j in user_houses:
                 if j == i[-1]:

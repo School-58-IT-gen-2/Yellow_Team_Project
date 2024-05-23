@@ -16,8 +16,6 @@ class Player:
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][13]
-        self.player_coal_speed = 0
-        self.player_copper_speed = 0 # 5 T/мин
         self.player_level = 1
         self.turn_counter = self.db.select_by_user_id("user_info",self.user_id)[0][15]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
@@ -25,8 +23,9 @@ class Player:
         self.pay_for_turn = len(t.split(","))
         #print(self.pay_for_turn)
 
-    def convert_units_to_speed(units):
-        return int((units+4)/14.1014)
+    def convert_units_to_speed(self):
+        self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
+        return int((self.player_units+4)/14.1014)
 
     def player_move(self,move, user_id):
         db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
@@ -91,7 +90,7 @@ class Player:
 
         user_houses = self.db.select_by_user_id("user_info", user_id)[0][3]
         
-        if self.turn_counter == 4:
+        if self.turn_counter == 3:
             t = self.gr.generate_res_by_turn(1)
             q = self.db.select_by_user_id("user_info",user_id)[0][13] + ',' + t
             self.turn_counter = 0
@@ -103,10 +102,10 @@ class Player:
 
         self.db.update_by_user_id("user_info",f"""turn_counter = {self.turn_counter}""",user_id)
 
-        if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
+        """if self.player_coal_speed >= 10 and self.player_copper_speed >= 10:
             self.player_level += 1
         elif self.player_units >= 700:
-            self.player_level += 1
+            self.player_level += 1"""
         #etc
 
         if user_houses == "no_buildings":
@@ -118,7 +117,8 @@ class Player:
             house = ["small","middle","big"][self.db.select_by_house_id(table="houses", house_id=i)[0][3]-1] +"_"+ _house
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
-        req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level},mining_speed={self.convert_units_to_speed(self.player_units)}"""
+        self.game.mine_resources()
+        req = f"""money = {self.player_money},units = {self.player_units},player_level = {self.player_level},mining_speed={self.convert_units_to_speed()}"""
         self.db.update_by_user_id("user_info", req, id=user_id)
 
     

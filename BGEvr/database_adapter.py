@@ -45,7 +45,7 @@ class Adapter():
         # ()
 
     def select_by_res_id(self, table,res_id):
-        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE res_id = {res_id}"""
+        request = f"""SELECT * FROM "{self.schema_name}"."{table}" WHERE id = {res_id}"""
         self.cursor.execute(request)
         data = self.cursor.fetchall()
         return data

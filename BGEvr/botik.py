@@ -29,6 +29,12 @@ class RunGameBot:
         self.db.connect()
         self.render = Render
         self.used_keyboard = []
+        self.economic_keyboard = [
+            [InlineKeyboardButton("продать весь уголь", callback_data='sell_coal')],
+            [InlineKeyboardButton("продать все золото", callback_data='sell_gold')],
+            [InlineKeyboardButton("продать все дерево", callback_data='sell_wood')],
+            [InlineKeyboardButton("назад", callback_data='main_page')]
+        ]
         self.setting_keyboard = [
             [InlineKeyboardButton("хелп ми плз", callback_data='help')],
             [InlineKeyboardButton("новая игра", callback_data='new_game')],
@@ -36,6 +42,7 @@ class RunGameBot:
         self.main_keyboard = [
             [InlineKeyboardButton("настройки", callback_data='settings')],
             [InlineKeyboardButton("построить", callback_data='build')],
+            [InlineKeyboardButton("экономика", callback_data='economic')],
             [InlineKeyboardButton("🔼", callback_data='u')],
             [InlineKeyboardButton("◀️",callback_data="l"),
              InlineKeyboardButton("▶️",callback_data="r")],
@@ -98,6 +105,8 @@ class RunGameBot:
         """if query.data == 'delete':
             self.player.delete_house()
             update_usage = True"""
+        if query.data == 'economic':
+            self.used_keyboard = self.economic_keyboard
         if query.data == 'help':
             self.txt += self.help_text
         if query.data == 'next_move':

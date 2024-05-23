@@ -4,7 +4,7 @@ class GetRes:
         self.user_id = user_id
         self.db = db
         self.res_count = random.randint(3,10)
-        self.res_list = ["tree","coal","copper"]
+        self.res_list = ["tree","coal","gold"]
         self.all_user_res = None
     def get_data(self):
         x = random.randint(0,7)
