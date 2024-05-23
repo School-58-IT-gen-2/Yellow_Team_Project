@@ -104,7 +104,7 @@ class Player:
 
         self.db.update_by_user_id("user_info",f"""turn_counter = {self.turn_counter}""",user_id)
 
-        if self.speed_mining >= 10:
+        if self.speed_mining > 9:
             self.player_level += 1
             _send_kudos = True
         elif self.player_units >= 700:
@@ -126,7 +126,7 @@ class Player:
         self.db.update_by_user_id("user_info", req, id=user_id)
         if _send_kudos:
             _send_kudos = False
-            return f"Поздравляю, вы увеличили свой уровень на 1,теперь он стал {self.player_level} / 4\nИ в честь этого мы отправляем вам небольшой подарок - {100*self.player_level*_send_kudos} кириешек.\nУдачного миросозерцания :)"
+            return f"Поздравляю, вы увеличили свой уровень на 1,теперь он стал {self.player_level} / 4\nИ в честь этого мы отправляем вам небольшой подарок - немного кириешек.\nУдачного миросозерцания :)"
 
         return f"Дамн, еще один ход{"." * self.turn_counter}"
     
