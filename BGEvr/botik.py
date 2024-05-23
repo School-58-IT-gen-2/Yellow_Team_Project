@@ -16,7 +16,7 @@ load_dotenv()
 
 class RunGameBot:
     def __init__(self):
-        self.help_text = "Итак, вы попали в незабываемый и удивительный мир строительства - Industrio!\nВ ней вы можете ходить красным курсором, который представляет вашу безграничную силу, нажимая на стрелочки.\nТак же вы можете строить и улучшать дома построенные вами в вкладке 'строительство'\nНу и кнопка следующий ход - следующий ход, что сказать.\nЖелаем приятной игры, разработчики йеллоу тиме <3!"
+        self.help_text = "Итак, вы попали в незабываемый и удивительный мир строительства под кодовым названием Industrio!\nВ ней вы можете ходить красным курсором, который представляет вашу безграничную силу, нажимая на стрелочки.\nТак же вы можете строить и улучшать дома построенные вами в вкладке 'строительство'\nНу и кнопка следующий ход - следующий ход, что сказать.\nЖелаем приятной игры, разработчики йеллоу тиме <3!"
         self.new_gamer = False
         self.txt = ''
         self.player_view =None
@@ -31,22 +31,23 @@ class RunGameBot:
         self.used_keyboard = []
         self.economic_keyboard = [
             [InlineKeyboardButton("продать весь уголь", callback_data='sell_coal')],
-            [InlineKeyboardButton("продать все золото", callback_data='sell_gold')],
             [InlineKeyboardButton("продать все дерево", callback_data='sell_wood')],
+            [InlineKeyboardButton("продать все золото", callback_data='sell_gold')],
             [InlineKeyboardButton("назад", callback_data='main_page')]
         ]
         self.setting_keyboard = [
             [InlineKeyboardButton("хелп ми плз", callback_data='help')],
+            [InlineKeyboardButton("инфо о вас", callback_data='user_info')],
             [InlineKeyboardButton("новая игра", callback_data='new_game')],
             [InlineKeyboardButton("назад", callback_data='main_page')]]
         self.main_keyboard = [
             [InlineKeyboardButton("настройки", callback_data='settings')],
             [InlineKeyboardButton("построить", callback_data='build')],
-            [InlineKeyboardButton("экономика", callback_data='economic')],
             [InlineKeyboardButton("🔼", callback_data='u')],
             [InlineKeyboardButton("◀️",callback_data="l"),
              InlineKeyboardButton("▶️",callback_data="r")],
             [InlineKeyboardButton("🔽", callback_data='d')],
+            [InlineKeyboardButton("экономика", callback_data='economic')],
             [InlineKeyboardButton("следующий ход",callback_data="next_move")]
         ]
         self.build_keyboard = [
@@ -92,8 +93,6 @@ class RunGameBot:
         query.answer()
         print(query.data)
         player = Player(query.from_user.id, self.db)
-        #if query.data == 'mod':
-        #    self.txt += ",".join(self.dataloader.load_player_id())
         if query.data == 'settings':
             self.used_keyboard = self.setting_keyboard
         if query.data == 'new_game':
@@ -101,10 +100,10 @@ class RunGameBot:
             self.db.delete_by_user_id("user_info",self.user.id)
             user_res = self.generator_res.generate_res()
             self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name,"last_img_id": t,"res_id" : user_res,"player_level" : 1,"mining_speed":1}],id_name='user_id')
+            self.used_keyboard = self.main_keyboard
             update_usage = True
-        """if query.data == 'delete':
-            self.player.delete_house()
-            update_usage = True"""
+        if query.data == 'user_info':
+            self.txt += self.player.player_info()
         if query.data == 'economic':
             self.used_keyboard = self.economic_keyboard
         if query.data == 'help':
@@ -141,6 +140,10 @@ class RunGameBot:
             self.txt += player.build_smth("small_bank", query.from_user.id)
             update_usage = True
             #self.txt += "А фигушки, механика пока не работает :("
+
+        if query.data in ["sell_gold","sell_coal","sell_wood"]:
+            self.txt += self.player.trade(query.data.split("_")[1])
+            update_usage = True
 
         if query.data == 'upgrade':
             self.txt+=self.player.update_house()

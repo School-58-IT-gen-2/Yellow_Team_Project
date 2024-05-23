@@ -150,8 +150,8 @@ class Game():
             if t != []:
                 print(t)
                 if t[0][1] == player_x and t[0][2] == player_y:
-                    if t[0][3] >=3:
-                        return "больше нельзя строить - максимальный уровень"
+                    if t[0][3] >=3 or (t[0][0] == "bank" and t[0][3] >= 2):
+                        return "Больше нельзя строить - максимальный уровень"
                     else:
                         new_level = t[0][3] + 1
                     #print(t[0][3],'  ',new_level)
@@ -181,6 +181,7 @@ class Game():
                 _tree += _mine_speed
                 t[3] -= _mine_speed
             req = f"""coal = {_coal},wood = {_tree},gold = {_gold}"""
+            self.db.update_by_res_id("resources",f"""volume = {t[3]}""",i)
             self.db.update_by_user_id("user_info",req,self.user_id)
             if t[3] <= 0:
                 self.db.delete_by_house_id("resources",i)

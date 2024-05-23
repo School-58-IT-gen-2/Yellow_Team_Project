@@ -72,9 +72,9 @@ class Player:
         houses_data = {
             "small_house": [0, 10],
             "small_factory": [10, 0],
-            "middle_house": [0,25],
+            "middle_house": [5,25],
             "middle_factory": [25,0],
-            "big_house": [0,50],
+            "big_house": [10,50],
             "big_factory": [50,0],
             "small_bank": [0,0],
             "middle_bank":[0,0]
@@ -133,10 +133,10 @@ class Player:
     def build_smth(self,buiding, user_id):
         return self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
 
-    def player_info(self, user_id):
+    def player_info(self):
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
-        return f"Ваши кириешки, Милорд - {self.player_money}\nКоличество ваших жителей, Милорд - {self.player_units}"
+        return f"Ваш уровень - {self.player_level}\n\n\nДа и все..."
     
 
 
@@ -156,3 +156,25 @@ class Player:
             return self.game.upgrade_house(self.player_pos_x,self.player_pos_y)
         else:
             return "Нету денег :("
+        
+    def check_bank(self):
+        user_houses = self.db.select_by_user_id("user_info", self.user_id)[0][3]
+        if user_houses == "no_buildings":
+            return 0
+        user_houses = list(map(int, user_houses.split(',')))
+        n = 0
+        for i in user_houses:
+            t = self.db.select_by_house_id("houses",i)[0]
+            if t[0] == "bank":
+                n += t[3]
+        return n
+
+    def trade(self,res_type):
+        res = {"wood" : self.db.select_by_user_id("user_info",self.user_id)[0][10],
+               "coal" : self.db.select_by_user_id("user_info",self.user_id)[0][11],
+               "gold" : self.db.select_by_user_id("user_info",self.user_id)[0][16]}
+        self.player_money += res[res_type] * (1+self.check_bank())//2
+        res[res_type] = 0
+        req = f"""coal = {res["coal"]},gold = {res["gold"]},wood = {res["wood"]},money = {self.player_money}"""
+        self.db.update_by_user_id("user_info",req,self.user_id)
+        return f"Вы успешно продали данный ресурс, на вашем балансе - {self.player_money} кириешек!"

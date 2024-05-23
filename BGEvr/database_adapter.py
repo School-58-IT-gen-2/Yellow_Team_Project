@@ -67,7 +67,7 @@ class Adapter():
         self.cursor.execute(request_update)
         self.conn.commit()
     def update_by_res_id(self, table, request, id):
-        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE res_id={id}"""
+        request_update = f"""UPDATE "{self.schema_name}"."{table}" SET {request} WHERE id={id}"""
         print(request_update)
         self.cursor.execute(request_update)
         self.conn.commit()
