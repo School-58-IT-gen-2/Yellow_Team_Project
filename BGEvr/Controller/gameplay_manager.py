@@ -157,9 +157,7 @@ class Game():
                     #print(t[0][3],'  ',new_level)
                     req = f"""house_level = {new_level}"""
                     self.db.update_by_house_id("houses",req,t[0][4])
-                    break
-
-        return f"Вы увеличили уровень данного сооружения на 1,\nтеперь его уровень - {new_level}"
+                    return f"Вы увеличили уровень данного сооружения на 1,\nтеперь его уровень - {new_level}"
 
 
 

@@ -110,7 +110,7 @@ class RunGameBot:
         if query.data == 'help':
             self.txt += self.help_text
         if query.data == 'next_move':
-            player.next_turn(query.from_user.id)
+            self.txt += player.next_turn(query.from_user.id)
             print("Ходы игрока - ",player.turn_counter)
             update_usage = True
         if query.data == 'build':
