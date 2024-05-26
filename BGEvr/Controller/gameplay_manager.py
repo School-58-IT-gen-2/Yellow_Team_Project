@@ -169,7 +169,10 @@ class Game():
         _gold = self.db.select_by_user_id("user_info",self.user_id)[0][16]
         _tree = self.db.select_by_user_id("user_info",self.user_id)[0][10]
         for i in _res_id:
-            t = list(self.db.select_by_res_id("resources",i)[0])
+            try:
+                t = list(self.db.select_by_res_id("resources",i)[0])
+            except:
+                continue
             print(t[3])
             if t[4] == "gold":
                 _gold += _mine_speed
@@ -185,4 +188,5 @@ class Game():
             self.db.update_by_user_id("user_info",req,self.user_id)
             if t[3] <= 0:
                 self.db.delete_by_house_id("resources",i)
+            
 
