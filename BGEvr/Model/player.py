@@ -105,12 +105,11 @@ class Player:
 
         self.db.update_by_user_id("user_info",f"""turn_counter = {self.turn_counter}""",user_id)
         self.previous_level = self.db.select_by_user_id("user_info",self.user_id)[0][18]
-        if self.speed_mining > 9 and int(self.previous_level) == 1:
+        if self.speed_mining > 9 and int(self.previous_level) == 1: # поменять на код-во шагов
             self.player_level += 1
             self.previous_level += 1
             self.send_kudos = True
         else:
-            self.previous_level = int(self.player_level)
             self.send_kudos = False
         #etc
 
@@ -129,7 +128,7 @@ class Player:
         if self.send_kudos:
             return f"Поздравляю, вы увеличили свой уровень на 1,теперь он стал {self.player_level} / 4\nИ в честь этого мы отправляем вам небольшой подарок - немного кириешек.\nУдачного миросозерцания :)"
 
-        return f"Дамн, еще один ход{"." * self.turn_counter}"
+        return f"Еще один ничего не значащий ход{"." * self.turn_counter}"
     
     def build_smth(self,buiding, user_id):
         return self.game.create_house(buiding,[self.progress["x"],self.progress["y"]])
