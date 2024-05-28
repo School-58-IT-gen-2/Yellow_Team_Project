@@ -36,6 +36,9 @@ class Render:
         draw.text((740, 1125), f"Уголь: {self.user_data[11] } Т.", font=font)
         draw.text((740, 1200), f"Дерево: {self.user_data[10] } Т.", font=font)
         draw.text((740, 1275), f"Золото: {self.user_data[16] } Т.", font=font)
+        if self.db.select_by_user_id("user_info",user_id)[0][14] == 4:
+            finally_trahun = Image.open("./res/end_pic.png").resize((self._one_point_size*8, self._one_point_size*8))
+            self._map.paste(finally_trahun,(0,0), mask=_selected)
         return self._map
     def save_pic(self,user_id):
         self._map.save(f"./players_images/{user_id}.png")

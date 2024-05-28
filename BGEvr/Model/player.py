@@ -17,7 +17,6 @@ class Player:
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
         self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][13]
         self.speed_mining = self.db.select_by_user_id("user_info",self.user_id)[0][17]
-        self.previous_level = self.db.select_by_user_id("user_info",self.user_id)[0][18]
         self.player_level = 1
         self.turn_counter = self.db.select_by_user_id("user_info",self.user_id)[0][15]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
@@ -93,10 +92,10 @@ class Player:
 
         user_houses = self.db.select_by_user_id("user_info", user_id)[0][3]
         
-        if self.turn_counter == 3:
-            t = self.gr.generate_res_by_turn(1)
+        if self.turn_counter % 4 == 3:
+            t = self.gr.generate_res_by_turn(self.player_level)
             q = self.db.select_by_user_id("user_info",user_id)[0][13] + ',' + t
-            self.turn_counter = 0
+            #self.turn_counter = 0
             req = f"""res_id = '{q}',turn_counter = {self.turn_counter}"""
             #print(t)
             #print(q)
@@ -104,10 +103,9 @@ class Player:
             self.db.update_by_user_id("user_info", req, id=user_id)
 
         self.db.update_by_user_id("user_info",f"""turn_counter = {self.turn_counter}""",user_id)
-        self.previous_level = self.db.select_by_user_id("user_info",self.user_id)[0][18]
-        if self.speed_mining > 9 and int(self.previous_level) == 1: # поменять на код-во шагов
+        #self.previous_level = self.db.select_by_user_id("user_info",self.user_id)[0][18]
+        if self.turn_counter in [10,25,50,100]:
             self.player_level += 1
-            self.previous_level += 1
             self.send_kudos = True
         else:
             self.send_kudos = False
@@ -123,11 +121,12 @@ class Player:
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]
         self.game.mine_resources()
-        req = f"""money = {self.player_money + (100*self.player_level * self.send_kudos)},units = {self.player_units},player_level = {self.player_level},mining_speed={self.convert_units_to_speed()},previous_level = {self.previous_level}"""
+        req = f"""money = {self.player_money + (100*self.player_level * self.send_kudos)},units = {self.player_units},player_level = {self.player_level},mining_speed={self.convert_units_to_speed()}"""
         self.db.update_by_user_id("user_info", req, id=user_id)
+        if self.player_level == 4:
+            return f"Поздравляю, вы прошли нашу игру.\n Вы потратили 185 ходов для этого и это круто, надеюсь Вам понравилось :)"
         if self.send_kudos:
             return f"Поздравляю, вы увеличили свой уровень на 1,теперь он стал {self.player_level} / 4\nИ в честь этого мы отправляем вам небольшой подарок - немного кириешек.\nУдачного миросозерцания :)"
-
         return f"Еще один ничего не значащий ход{"." * self.turn_counter}"
     
     def build_smth(self,buiding, user_id):
