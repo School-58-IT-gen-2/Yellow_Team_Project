@@ -14,11 +14,11 @@ class ViewTG():
     def send_pic(self,update:Update,callback:CallbackContext, user_id, message_id=None, db=None):
         bot = Bot(self.bot_id)
         self.user_id = user_id
-        self.db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
+        self.db = Adapter(schema_name="Yellow_team", host="85.208.86.99",
                           port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
                           target_session_attrs="read-write")
         self.db.connect()
-        self.last_img_id = self.db.select_by_user_id("user_info", user_id)[0][12]
+        self.last_img_id = self.db.select_by_user_id("user_info", user_id)[0][10]
         try:
             if self._first_pic and message_id==None:
                 self.message = bot.send_photo(self.user_id,photo=open(f'players_images/{self.user_id}.png','rb'))

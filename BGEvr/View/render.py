@@ -32,11 +32,11 @@ class Render:
         font = ImageFont.truetype("res/pixel_font.otf", size=35)
         draw.text((50, 1125), f"Кириешки: {self.user_data[8]}", font=font)
         draw.text((50, 1200), f"Жители: {self.user_data[2]}", font=font)
-        draw.text((50, 1275), f"Скорость добычи: {self.user_data[17]} Т./ход", font=font)
-        draw.text((740, 1125), f"Уголь: {self.user_data[11] } Т.", font=font)
-        draw.text((740, 1200), f"Дерево: {self.user_data[10] } Т.", font=font)
+        draw.text((50, 1275), f"Скорость добычи: {self.user_data[13]} Т./ход", font=font)
+        draw.text((740, 1125), f"Уголь: {self.user_data[15] } Т.", font=font)
+        draw.text((740, 1200), f"Дерево: {self.user_data[14] } Т.", font=font)
         draw.text((740, 1275), f"Золото: {self.user_data[16] } Т.", font=font)
-        if self.db.select_by_user_id("user_info",user_id)[0][14] == 4:
+        if self.db.select_by_user_id("user_info",user_id)[0][12] == 4:
             finally_trahun = Image.open("./res/end_pic.png").resize((self._one_point_size*8, self._one_point_size*8))
             self._map.paste(finally_trahun,(0,0), mask=_selected)
         return self._map
@@ -57,11 +57,10 @@ class Render:
         all_buildings = {"house":['small','middle','big'],"factory":['small','middle','big'],"bank":["small","middle"]}
         for i in all_houses:
             for j in user_houses:
-                if j == i[-1]:
+                if j == i[0]:
                     _pos_x = i[2]
                     _pos_y = i[1]
-                    build_type = i[0]
-                    _build = i[4]
+                    build_type = i[4]
                     build_level = all_buildings[build_type][i[3]-1]
                     _cycle_ground = Image.open(f"./res/{_ground[random.randint(0, 3)]}").convert(mode="RGBA").resize((self._one_point_size, self._one_point_size))
                     _house = Image.open(f"./res/{build_level+'_'+build_type}.png").convert(mode="RGBA").resize((self._one_point_size,self._one_point_size))
@@ -73,7 +72,7 @@ class Render:
     def render_res(self):
         _ground = ['ground1.png', 'ground2.png', 'ground3.png', 'ground4.png']
         print(self.user_data[12])
-        user_res = self.user_data[13]
+        user_res = self.user_data[11]
         user_res = list(map(int,user_res.split(',')))
         all_res = self.db.select("resources")
         for i in all_res:

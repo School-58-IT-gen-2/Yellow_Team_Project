@@ -65,7 +65,7 @@ class Game():
         if _houses_id == 'no_buildings':
             return True
         _houses_id = list(map(int,_houses_id.split(',')))
-        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][13].split(',')))
+        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][11].split(',')))
         player_pos_x = self.db.select_by_user_id("user_info",self.user_id)[0][0]
         player_pos_y = self.db.select_by_user_id("user_info",self.user_id)[0][1]
         houses_data = self.db.select("houses")
@@ -163,11 +163,11 @@ class Game():
 
 
     def mine_resources(self):
-        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][13].split(',')))
-        _mine_speed = self.db.select_by_user_id("user_info",self.user_id)[0][17]
-        _coal = self.db.select_by_user_id("user_info",self.user_id)[0][11]
+        _res_id = list(map(int,self.db.select_by_user_id("user_info",self.user_id)[0][11].split(',')))
+        _mine_speed = self.db.select_by_user_id("user_info",self.user_id)[0][13]
+        _coal = self.db.select_by_user_id("user_info",self.user_id)[0][14]
         _gold = self.db.select_by_user_id("user_info",self.user_id)[0][16]
-        _tree = self.db.select_by_user_id("user_info",self.user_id)[0][10]
+        _tree = self.db.select_by_user_id("user_info",self.user_id)[0][15]
         for i in _res_id:
             try:
                 t = list(self.db.select_by_res_id("resources",i)[0])

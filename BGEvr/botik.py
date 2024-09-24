@@ -25,7 +25,7 @@ class RunGameBot:
         self.progress = None
         self.game_data = None
         self.data_loader = None
-        self.db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+        self.db = Adapter(schema_name="Yellow_team",host="85.208.86.99",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
         self.db.connect()
         self.render = Render
         self.used_keyboard = []
@@ -96,7 +96,7 @@ class RunGameBot:
         if query.data == 'settings':
             self.used_keyboard = self.setting_keyboard
         if query.data == 'new_game':
-            t = self.db.select_by_user_id("user_info",self.user.id)[0][12]
+            t = self.db.select_by_user_id("user_info",self.user.id)[0][10]
             self.db.delete_by_user_id("user_info",self.user.id)
             user_res = self.generator_res.generate_res()
             self.db.insert_batch("user_info",[{"pos_x" : 1,"pos_y" : 1, "units" : 10, "house_id" : 'no_buildings', "chat_id" : self.user.id,"user_id" : self.user.id,"created" : int(datetime.now().timestamp()), "updated" : int(datetime.now().timestamp()),"money" : 100,"user_nickname" : self.user.full_name,"last_img_id": t,"res_id" : user_res,"player_level" : 1,"mining_speed":0}],id_name='user_id')

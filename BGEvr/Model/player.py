@@ -15,10 +15,10 @@ class Player:
         self.player_pos_y = self.db.select_by_user_id("user_info",self.user_id)[0][1]
         self.player_money = self.db.select_by_user_id("user_info",self.user_id)[0][8]
         self.player_units = self.db.select_by_user_id("user_info",self.user_id)[0][2]
-        self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][13]
-        self.speed_mining = self.db.select_by_user_id("user_info",self.user_id)[0][17]
+        self.player_res = self.db.select_by_user_id("user_info",self.user_id)[0][11]
+        self.speed_mining = self.db.select_by_user_id("user_info",self.user_id)[0][13]
         self.player_level = 1
-        self.turn_counter = self.db.select_by_user_id("user_info",self.user_id)[0][15]
+        self.turn_counter = self.db.select_by_user_id("user_info",self.user_id)[0][17]
         self.progress = {"x" : self.player_pos_x,"y" : self.player_pos_y}
         t = self.db.select_by_user_id("user_info",self.user_id)[0][3]
         self.pay_for_turn = len(t.split(","))
@@ -29,7 +29,7 @@ class Player:
         return int((self.player_units+4)/14.1014)
 
     def player_move(self,move, user_id):
-        db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
+        db = Adapter(schema_name="Yellow_team", host="85.208.86.99",
                           port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
                           target_session_attrs="read-write")
         db.connect()
@@ -80,7 +80,7 @@ class Player:
             "middle_bank":[0,0]
         }
 
-        self.db = Adapter(schema_name="Yellow_Team_Project", host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",
+        self.db = Adapter(schema_name="Yellow_team", host="85.208.86.99",
                           port="6432", dbname="sch58_db", sslmode=None, user="Admin", password="atdhfkm2024",
                           target_session_attrs="read-write")
         self.db.connect()
@@ -94,7 +94,7 @@ class Player:
         
         if self.turn_counter % 4 == 3:
             t = self.gr.generate_res_by_turn(self.player_level)
-            q = self.db.select_by_user_id("user_info",user_id)[0][13] + ',' + t
+            q = self.db.select_by_user_id("user_info",user_id)[0][11] + ',' + t
             #self.turn_counter = 0
             req = f"""res_id = '{q}',turn_counter = {self.turn_counter}"""
             #print(t)
@@ -116,7 +116,7 @@ class Player:
         user_houses = list(map(int, user_houses.split(',')))
 
         for i in user_houses:
-            _house = self.db.select_by_house_id(table="houses", house_id=i)[0][0]
+            _house = self.db.select_by_house_id(table="houses", house_id=i)[0][4]
             house = ["small","middle","big"][self.db.select_by_house_id(table="houses", house_id=i)[0][3]-1] +"_"+ _house
             self.player_money += houses_data[house][0]
             self.player_units += houses_data[house][1]

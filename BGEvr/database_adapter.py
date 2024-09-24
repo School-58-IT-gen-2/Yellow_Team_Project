@@ -119,7 +119,7 @@ class Adapter():
 
 
 #db.insert_batch("houses",data = {...})
-"""db = Adapter(schema_name="Yellow_Team_Project",host="rc1d-9cjee2y71olglqhg.mdb.yandexcloud.net",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
+"""db = Adapter(schema_name="Yellow_team",host="85.208.86.99",port="6432",dbname="sch58_db",sslmode=None,user="Admin",password="atdhfkm2024",target_session_attrs="read-write")
 db.connect()
 db.delete_all("user_info")
 db.delete_all("resources")

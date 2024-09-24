@@ -14,4 +14,8 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    while 1:
+        try:
+            main()
+        except:
+            print("No using - restart!")
